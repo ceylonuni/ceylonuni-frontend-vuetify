@@ -8,7 +8,7 @@ const routes = [
     path: "/",
     component: () =>
       import(
-        /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/socializing/Timeline"
+        /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/socializing/Home"
       ),
     children: [
       {

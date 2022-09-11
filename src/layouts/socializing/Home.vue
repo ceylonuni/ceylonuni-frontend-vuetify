@@ -88,8 +88,6 @@
 <!-- eslint-disable prettier/prettier -->
 <script>
 export default {
-  name: "App",
-
   data: () => ({
     drawer: true,
     items: [
