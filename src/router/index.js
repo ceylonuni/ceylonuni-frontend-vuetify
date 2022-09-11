@@ -21,6 +21,23 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/entry",
+    component: () =>
+      import(
+        /* webpackChunkName: "layout-auth-entry" */ "@/layouts/auth/Entry"
+      ),
+    children: [
+      {
+        path: "",
+        name: "SocializingHome",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-auth-entry" */ "@/views/auth/Entry"
+          ),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({

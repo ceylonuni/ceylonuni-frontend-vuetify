@@ -1,6 +1,6 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
-  <v-card class="mx-auto" max-width="500">
+  <v-card class="mx-auto" max-width="600">
     <v-img
       class="white--text align-end"
       max-height="500px"
