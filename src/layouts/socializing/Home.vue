@@ -62,6 +62,16 @@
       <v-divider />
 
       <v-list dense>
+        <v-list-item link>
+          <v-list-item-icon v-if="mini">
+            <v-icon>mdi-lightning-bolt</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content v-if="!mini">
+            <v-btn small color="primary" @click="createPost" dark
+              ><v-icon left> mdi-lightning-bolt </v-icon> Create Post
+            </v-btn>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item v-for="item in items" :key="item.title" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -83,13 +93,22 @@
     <v-footer app>
       <!-- -->
     </v-footer>
+    <!-- dialogs -->
+    <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
   </v-app>
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
 export default {
+  components: {
+    DialogCreatePost: () =>
+      import(
+        /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/Post/DialogAddPost"
+      ),
+  },
   data: () => ({
     drawer: true,
+    isCreatePost: false,
     items: [
       { title: "Home", icon: "mdi-home-city" },
       { title: "My Account", icon: "mdi-account" },
@@ -97,5 +116,13 @@ export default {
     ],
     mini: false,
   }),
+  methods: {
+    createPost() {
+      this.isCreatePost = true;
+    },
+    closeCreatePost(){
+      this.isCreatePost = false
+    }
+  },
 };
 </script>

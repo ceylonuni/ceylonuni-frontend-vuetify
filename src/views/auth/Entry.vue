@@ -117,7 +117,7 @@ export default {
       if (this.step == 1) {
         // verify email
         axios
-          .post("http://localhost:3000/api/auth/mail/verify", {
+          .post("http://localhost:3000/api/auth/email/verify", {
             email: this.email,
           })
           .then((response) => {
@@ -141,6 +141,8 @@ export default {
             password: this.password,
           })
           .then((response) => {
+            this.$store.commit("updateAuth",response.data)
+            this.$router.push({name:'SocializingHome'})
             console.log(response);
           })
           .catch((error) => {
@@ -149,7 +151,7 @@ export default {
       } else if (this.step == 3) {
         // send verification email
         axios
-          .post("http://localhost:3000/api/auth/mail/send", {
+          .post("http://localhost:3000/api/auth/email/send", {
             email: this.email,
           })
           .then((response) => {

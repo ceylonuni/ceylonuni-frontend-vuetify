@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Vue from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
@@ -13,3 +14,4 @@ new Vue({
   vuetify,
   render: (h) => h(App),
 }).$mount("#app");
+/* eslint-disable no-console */

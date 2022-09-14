@@ -1,7 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
+import store from "./../store/index"
+import multiguard from 'vue-router-multiguard';
 Vue.use(VueRouter);
+
+const loggedIn = function(to, from, next) {
+  if (!store.state.auth.data.token) next({ name: 'AuthEntry' })
+  next();
+}
 
 const routes = [
   {
@@ -10,6 +16,7 @@ const routes = [
       import(
         /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/socializing/Home"
       ),
+      beforeEnter: multiguard([loggedIn]),
     children: [
       {
         path: "",
@@ -30,10 +37,27 @@ const routes = [
     children: [
       {
         path: "",
-        name: "SocializingHome",
+        name: "AuthEntry",
         component: () =>
           import(
             /* webpackChunkName: "view-auth-entry" */ "@/views/auth/Entry"
+          ),
+      },
+    ],
+  },
+  {
+    path: "/logout",
+    component: () =>
+      import(
+        /* webpackChunkName: "layout-auth-logout" */ "@/layouts/auth/Entry"
+      ),
+    children: [
+      {
+        path: "",
+        name: "AuthLogout",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-auth-logout" */ "@/views/auth/Logout"
           ),
       },
     ],
