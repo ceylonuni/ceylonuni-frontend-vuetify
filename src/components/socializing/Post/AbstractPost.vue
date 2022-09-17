@@ -1,10 +1,8 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <ImagePost :data="data"  v-if="type == 'image'" />
   <VideoPost :data="data" v-else-if="type == 'video'" />
   <TextPost :data="data" v-else />
 </template>
-<!-- eslint-disable prettier/prettier -->
   <script>
 export default {
   components: {

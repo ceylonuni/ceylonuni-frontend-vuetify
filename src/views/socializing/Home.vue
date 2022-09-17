@@ -17,10 +17,6 @@
 <script>
 export default {
   components: {
-    // Welcome: () =>
-    //   import(
-    //     /* webpackChunkName: "component-socializing-welcome" */ "@/components/socializing/Welcome"
-    //   ),
     Timeline: () =>
       import(
         /* webpackChunkName: "component-socializing-timeline" */ "@/components/socializing/Timeline"

@@ -1,4 +1,3 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <v-card class="mx-auto" max-width="600">
     <v-img
@@ -24,7 +23,6 @@
     </v-card-actions>
   </v-card>
 </template>
-<!-- eslint-disable prettier/prettier -->
 <script>
 export default {
   props:["data"]

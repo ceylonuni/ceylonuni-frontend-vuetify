@@ -1,18 +1,20 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
-  <v-card elevation="0" class="mx-auto" max-width="600" color="transparent">
+  <v-card elevation="0" width="350" class="mx-auto" color="transparent">
     <Welcome />
-    <v-card class="mx-auto" max-width="500" color="grey lighten-5">
-      <v-card-title class="text-h6 font-weight-regular justify-space-between">
-        <span>{{ currentTitle }}</span>
+    <v-divider></v-divider>
+    <v-card class="mx-auto" rounded="lg" outlined color="transparent">
+      <v-card-title class="font-weight-regular justify-space-between teal--text pb-0">
+       {{ currentTitle }}
       </v-card-title>
 
       <v-window v-model="step">
         <v-window-item :value="1">
           <v-card-text>
             <v-text-field
-              label="Email"
-              placeholder="john@vuetifyjs.com"
+            rounded
+            filled
+              label="University Email"
+              placeholder="john@university.lk"
               v-model="email"
             ></v-text-field>
             <span class="text-caption grey--text text--darken-1">
@@ -66,7 +68,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn :disabled="step === 1" text @click="step = 1"> Back </v-btn>
+        <v-btn :disabled="step === 1" text @click="step = 1" color="teal"> Back </v-btn>
         <v-spacer></v-spacer>
         <v-btn
           @click="verifyEmail"
@@ -80,7 +82,6 @@
     </v-card>
   </v-card>
 </template>
-<!-- eslint-disable prettier/prettier -->
 <script>
 const axios = require("axios").default;
 export default {

@@ -1,4 +1,4 @@
-<!-- eslint-disable prettier/prettier -->
+
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -48,7 +48,7 @@
     </v-dialog>
   </v-row>
 </template>
-<!-- eslint-disable prettier/prettier -->
+
 <script>
 const axios = require("axios").default;
 import { mapState } from "vuex";

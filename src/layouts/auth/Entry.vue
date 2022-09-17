@@ -1,6 +1,5 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
-  <v-app>
+  <v-app style="background-color: rgb(245, 250, 250);">
     <v-main class="d-flex">
       <v-container fill-height>
         <router-view></router-view>
@@ -8,7 +7,7 @@
     </v-main>
   </v-app>
 </template>
-<!-- eslint-disable prettier/prettier -->
+
 <script>
 export default {
   data: () => ({
@@ -16,4 +15,6 @@ export default {
   }),
 };
 </script>
+
+
   

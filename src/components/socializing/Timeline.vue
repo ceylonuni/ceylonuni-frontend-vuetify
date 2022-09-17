@@ -1,4 +1,3 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <div>
     <div class="pa-3" v-for="(post,i) in posts" :key="i">
@@ -6,7 +5,6 @@
   </div>
   </div>
 </template>
-<!-- eslint-disable prettier/prettier -->
 <script>
 const axios = require("axios").default;
 import { mapState } from "vuex";

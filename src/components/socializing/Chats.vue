@@ -1,4 +1,3 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <v-list three-line max-width="300" style="overflow-y:auto; max-height: calc(100vh - 100px);">
     <template v-for="(item, index) in items">
@@ -27,7 +26,6 @@
     </template>
   </v-list>
 </template>
-<!-- eslint-disable prettier/prettier -->
 <script>
 export default {
   data: () => ({

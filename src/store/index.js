@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Vue from "vue";
 import Vuex from "vuex";
 import auth from "./modules/auth";
@@ -29,4 +28,3 @@ export default new Vuex.Store({
   },
   plugins: [vuexCookie.plugin, vuexLocal.plugin],
 });
-/* eslint-disable no-console */

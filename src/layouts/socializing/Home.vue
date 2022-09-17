@@ -1,4 +1,3 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <v-app>
     <v-app-bar app flat color="white" align-center>
@@ -97,7 +96,7 @@
     <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
   </v-app>
 </template>
-<!-- eslint-disable prettier/prettier -->
+
 <script>
 export default {
   components: {
