@@ -2,19 +2,19 @@
 <template>
   <v-card class="mx-auto" max-width="600">
     <v-img
+    v-if="data && data.image_url"
       class="white--text align-end"
       max-height="500px"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+      contain
+      :src="data.image_url"
     >
-      <v-card-title>Top 10 Australian beaches</v-card-title>
+      <!-- <v-card-title>Top 10 Australian beaches</v-card-title> -->
     </v-img>
 
-    <v-card-subtitle class="pb-0"> Number 10 </v-card-subtitle>
+    <v-card-subtitle class="pb-0">Post by : {{data.students.first_name}} | {{data.created_at}} </v-card-subtitle>
 
     <v-card-text class="text--primary">
-      <div>Whitehaven Beach</div>
-
-      <div>Whitsunday Island, Whitsunday Islands</div>
+      <div>{{data.text}}</div>
     </v-card-text>
 
     <v-card-actions>
@@ -27,5 +27,6 @@
 <!-- eslint-disable prettier/prettier -->
 <script>
 export default {
+  props:["data"]
 };
 </script>
