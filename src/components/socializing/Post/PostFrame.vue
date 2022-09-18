@@ -3,7 +3,6 @@
     <ImagePost :data="data.image_url" v-if="data.image_url" />
     <VideoPost :data="data.video_url" v-else-if="data.video_url" />
     <TextPost :data="data.text" v-else />
-
     <v-card-subtitle class="pb-0 d-flex align-center justify-space-between">
       <div class="d-flex align-center">
         <v-avatar color="teal">
@@ -35,10 +34,10 @@
           @click="liked ? dislike() : like()"
           class="mx-1"
         >
-          <v-icon>{{ liked ? "mdi-heart" : "mdi-heart-outline" }}</v-icon> 13
+          <v-icon>{{ liked ? "mdi-heart" : "mdi-heart-outline" }}</v-icon> {{data.likes.length}}
         </v-btn>
         <v-btn icon large color="grey" @click="comment()" class="mx-1">
-          <v-icon>mdi-comment-outline</v-icon> 5
+          <v-icon>mdi-comment-outline</v-icon> {{data.comments.length}}
         </v-btn>
         <v-btn icon large color="grey" @click="share()" class="mx-1">
           <v-icon>mdi-share-outline</v-icon> 5
@@ -55,11 +54,13 @@
 
     <div class="ma-3" >
       <v-divider v-if="commentsPanel" class="mt-5 mb-3" />
-      <Comments v-if="commentsPanel" :data="data" />
+      <Comments v-if="commentsPanel" :data="data" @getPosts="getPosts" />
     </div>
   </v-card>
 </template>
   <script>
+     const axios = require("axios").default;
+import { mapState } from "vuex";
 export default {
   components: {
     ImagePost: () =>
@@ -84,17 +85,68 @@ export default {
     liked: false,
     commentsPanel: false,
   }),
+  computed: mapState({
+    auth: (state) => state.auth.data,
+  }),
   methods: {
     like() {
-      this.liked = true;
+      axios
+        .post(
+          "http://localhost:3000/api/socializing/post/"+this.data.id+"/like/add",{},
+          {
+            headers: {
+              Authorization: "Bearer " + this.auth.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.getPosts()
+          this.liked = true
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     dislike() {
-      this.liked = false;
+      axios
+        .post(
+          "http://localhost:3000/api/socializing/post/"+this.data.id+"/like/remove",{},
+          {
+            headers: {
+              Authorization: "Bearer " + this.auth.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.getPosts()
+          this.liked = false
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     comment() {
       this.commentsPanel = !this.commentsPanel;
     },
     share() {},
+    getPosts(){
+      this.$emit('getPosts')
+    },
   },
+  mounted(){
+    var likes = this.data.likes
+    var student_id = this.auth.student.id
+    var liked = this.$_.find(likes, function(n) {
+    if (n.students.id == student_id) {
+        return true;
+    }
+    
+});
+if(liked && liked.students){
+      this.liked =true
+    }
+  }
 };
 </script>
