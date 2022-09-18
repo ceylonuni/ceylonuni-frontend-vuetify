@@ -18,7 +18,7 @@
               v-model="email"
             ></v-text-field>
             <span class="text-caption grey--text text--darken-1">
-              This is the email you will use to login to your Vuetify account
+              This is the email you will use to login to your <span class="teal--text font-weight-medium">Ceylonuni</span>  account
             </span>
           </v-card-text>
         </v-window-item>
