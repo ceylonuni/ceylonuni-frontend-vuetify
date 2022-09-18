@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import auth from "./modules/auth";
+import moment from "moment";
 Vue.use(Vuex);
 
 import VuexPersistence from "vuex-persist";
@@ -21,6 +22,8 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
   modules: ["auth"],
 });
+
+Vue.prototype.$moment = moment;
 
 export default new Vuex.Store({
   modules: {

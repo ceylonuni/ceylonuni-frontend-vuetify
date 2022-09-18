@@ -83,7 +83,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="d-flex">
+    <v-main class="d-flex" style="background-color: rgb(245, 250, 250);">
       <v-container fill-height>
         <router-view></router-view>
       </v-container>
