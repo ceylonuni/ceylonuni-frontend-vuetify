@@ -102,7 +102,7 @@ export default {
   components: {
     DialogCreatePost: () =>
       import(
-        /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/Post/DialogAddPost"
+        /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/NewPostDialog"
       ),
   },
   data: () => ({

@@ -12,7 +12,7 @@ export default {
   components: {
     Post: () =>
       import(
-        /* webpackChunkName: "component-socializing-post" */ "@/components/socializing/Post/AbstractPost"
+        /* webpackChunkName: "component-socializing-post" */ "@/components/socializing/Post/PostFrame"
       ),
   },
   data() {
