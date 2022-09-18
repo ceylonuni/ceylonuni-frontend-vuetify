@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pa-3" v-for="(post,i) in posts" :key="i">
-    <Post :data="post" type="image" />
+    <Post :data="post" />
   </div>
   </div>
 </template>
@@ -15,7 +15,6 @@ export default {
         /* webpackChunkName: "component-socializing-post" */ "@/components/socializing/Post/AbstractPost"
       ),
   },
-  props: ["type", "data"],
   data() {
     return {
       posts: null,

@@ -119,9 +119,9 @@ export default {
     createPost() {
       this.isCreatePost = true;
     },
-    closeCreatePost(){
-      this.isCreatePost = false
-    }
+    closeCreatePost() {
+      this.isCreatePost = false;
+    },
   },
 };
 </script>
