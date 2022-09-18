@@ -56,7 +56,6 @@
             </v-form>
           </v-card>
           <v-btn color="primary" @click="validatePassword"> Continue </v-btn>
-          <v-btn text> Cancel </v-btn>
         </v-stepper-content>
 
         <v-stepper-step :complete="step > 2" step="2">
@@ -101,7 +100,7 @@
             </v-row>
           </v-card>
           <v-btn color="primary" @click="step = 3"> Continue </v-btn>
-          <v-btn text> Cancel </v-btn>
+          <v-btn text @click="step -= 1"> Back </v-btn>
         </v-stepper-content>
 
         <v-stepper-step :complete="step > 3" step="3">
