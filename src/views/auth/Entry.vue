@@ -125,7 +125,7 @@ export default {
             console.log(response);
             if (response.data.existing) {
               this.step = 2;
-            } else if (response.data.vaild) {
+            } else if (response.data.valid) {
               this.step = 3;
             } else {
               this.step = 4;
