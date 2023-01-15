@@ -59,7 +59,7 @@ export default {
     submit() {
       axios
         .post(
-          "http://localhost:3000/api/socializing/post/"+this.data.id+"/comment/add",
+          "http://localhost:3002/api/socializing/v1/post/"+this.data.id+"/comment/add",
           {
             text: this.comment,
           },

@@ -92,7 +92,7 @@ export default {
     like() {
       axios
         .post(
-          "http://localhost:3000/api/socializing/post/"+this.data.id+"/like/add",{},
+          "http://localhost:3002/api/socializing/v1/post/"+this.data.id+"/like/add",{},
           {
             headers: {
               Authorization: "Bearer " + this.auth.token,
@@ -111,7 +111,7 @@ export default {
     dislike() {
       axios
         .post(
-          "http://localhost:3000/api/socializing/post/"+this.data.id+"/like/remove",{},
+          "http://localhost:3002/api/socializing/v1/post/"+this.data.id+"/like/remove",{},
           {
             headers: {
               Authorization: "Bearer " + this.auth.token,

@@ -192,7 +192,7 @@ export default {
   methods: {
     checkToken() {
       axios
-        .get("http://localhost:3000/api/auth/validate-link", {
+        .get("http://localhost:3000/api/auth/v1/validate-link", {
           headers: {
             Authorization: "Bearer " + this.$route.query.token,
           },
@@ -209,7 +209,7 @@ export default {
     },
     getRegisterData() {
       axios
-        .get("http://localhost:3000/api/auth/register", {
+        .get("http://localhost:3000/api/auth/v1/register", {
           headers: {
             Authorization: "Bearer " + this.$route.query.token,
           },
@@ -227,7 +227,7 @@ export default {
     register(){
       if(this.checkbox){
         axios
-          .post("http://localhost:3000/api/auth/register", {
+          .post("http://localhost:3000/api/auth/v1/register", {
             email: this.email,
             first_name:this.firstName,
             last_name:this.lastName,
