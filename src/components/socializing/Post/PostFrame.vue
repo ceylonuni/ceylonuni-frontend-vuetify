@@ -34,10 +34,11 @@
           @click="liked ? dislike() : like()"
           class="mx-1"
         >
-          <v-icon>{{ liked ? "mdi-heart" : "mdi-heart-outline" }}</v-icon> {{data.likes.length}}
+          <v-icon>{{ liked ? "mdi-heart" : "mdi-heart-outline" }}</v-icon>
+          {{ data.likes.length }}
         </v-btn>
         <v-btn icon large color="grey" @click="comment()" class="mx-1">
-          <v-icon>mdi-comment-outline</v-icon> {{data.comments.length}}
+          <v-icon>mdi-comment-outline</v-icon> {{ data.comments.length }}
         </v-btn>
         <v-btn icon large color="grey" @click="share()" class="mx-1">
           <v-icon>mdi-share-outline</v-icon> 5
@@ -52,14 +53,15 @@
       <div>{{ data.text }}</div>
     </v-card-text>
 
-    <div class="ma-3" >
+    <div class="ma-3">
       <v-divider v-if="commentsPanel" class="mt-5 mb-3" />
       <Comments v-if="commentsPanel" :data="data" @getPosts="getPosts" />
     </div>
   </v-card>
 </template>
-  <script>
-     const axios = require("axios").default;
+
+<script>
+const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
   components: {
@@ -101,8 +103,8 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          this.getPosts()
-          this.liked = true
+          this.getPosts();
+          this.liked = true;
         })
         .catch((error) => {
           console.log(error);
@@ -120,8 +122,8 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          this.getPosts()
-          this.liked = false
+          this.getPosts();
+          this.liked = false;
         })
         .catch((error) => {
           console.log(error);
@@ -131,22 +133,21 @@ export default {
       this.commentsPanel = !this.commentsPanel;
     },
     share() {},
-    getPosts(){
-      this.$emit('getPosts')
+    getPosts() {
+      this.$emit("getPosts");
     },
   },
-  mounted(){
-    var likes = this.data.likes
-    var student_id = this.auth.student.id
-    var liked = this.$_.find(likes, function(n) {
-    if (n.students.id == student_id) {
+  mounted() {
+    var likes = this.data.likes;
+    var student_id = this.auth.student.id;
+    var liked = this.$_.find(likes, function (n) {
+      if (n.students.id == student_id) {
         return true;
+      }
+    });
+    if (liked && liked.students) {
+      this.liked = true;
     }
-    
-});
-if(liked && liked.students){
-      this.liked =true
-    }
-  }
+  },
 };
 </script>

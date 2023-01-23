@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app flat color="white" align-center>
+    <v-app-bar app flat color="white" align-center clipped-right>
       <v-text-field
         background-color="grey lighten-4"
         solo
@@ -10,6 +10,8 @@
         hide-details
         label="Search Ceylonuni"
         prepend-inner-icon="mdi-magnify"
+        @change="search"
+        v-model="searchKey"
       />
       <v-divider vertical inset class="mx-3" />
 
@@ -84,7 +86,7 @@
     </v-navigation-drawer>
 
     <v-main class="d-flex" style="background-color: rgb(245, 250, 250);">
-      <v-container fill-height>
+      <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -109,11 +111,12 @@ export default {
     drawer: true,
     isCreatePost: false,
     items: [
-      { title: "Home", icon: "mdi-home-city" },
+      { title: "Home", icon: "mdi-home" },
       { title: "My Account", icon: "mdi-account" },
-      { title: "Users", icon: "mdi-account-group-outline" },
+      { title: "Friends", icon: "mdi-account-multiple" },
     ],
     mini: false,
+    searchKey: "",
   }),
   methods: {
     createPost() {
@@ -122,6 +125,10 @@ export default {
     closeCreatePost() {
       this.isCreatePost = false;
     },
+    search(){
+      this.$router.push({ name: 'SearchResults', query: { q: this.searchKey }})
+      console.log(this.searchKey)
+    }
   },
 };
 </script>

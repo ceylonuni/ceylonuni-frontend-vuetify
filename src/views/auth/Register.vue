@@ -2,7 +2,7 @@
   <v-container>
     <div v-if="isValidateLink">
       <v-stepper
-        v-model="e6"
+        v-model="step"
         vertical
         width="100%"
         elevation="0"
@@ -14,49 +14,51 @@
         <p class="font-weight-regular text-h5 teal--text mx-5 mt-5">
           Register to Ceylonuni
         </p>
-        <v-stepper-step :complete="e6 > 1" step="1">
+        <v-stepper-step :complete="step > 1" step="1">
           Set your account password
           <!-- <small>Summarize if needed</small> -->
         </v-stepper-step>
 
         <v-stepper-content step="1">
           <v-card elevation="0" class="mb-3" color="transparent">
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="password"
-                  filled
-                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required, rules.min]"
-                  :type="showPassword ? 'text' : 'password'"
-                  name="input-10-1"
-                  label="Account Password"
-                  hint="At least 8 characters"
-                  counter
-                  @click:append="showPassword = !showPassword"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="confirmPassword"
-                  filled
-                  :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required, rules.min]"
-                  :type="showConfirmPassword ? 'text' : 'password'"
-                  name="input-10-1"
-                  label="Confirm Password"
-                  hint="At least 8 characters"
-                  counter
-                  @click:append="showConfirmPassword = !showConfirmPassword"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+            <v-form ref="passwordform" :v-model="true" lazy-validation>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    v-model="password"
+                    filled
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[rules.required, rules.min]"
+                    :type="showPassword ? 'text' : 'password'"
+                    name="input-10-1"
+                    label="Account Password"
+                    hint="At least 8 characters"
+                    counter
+                    @click:append="showPassword = !showPassword"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    v-model="confirmPassword"
+                    filled
+                    :append-icon="
+                      showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    :rules="[rules.required, rules.min, rules.matchPassword]"
+                    :type="showConfirmPassword ? 'text' : 'password'"
+                    label="Confirm Password"
+                    hint="At least 8 characters"
+                    counter
+                    @click:append="showConfirmPassword = !showConfirmPassword"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-card>
-          <v-btn color="primary" @click="e6 = 2"> Continue </v-btn>
-          <v-btn text> Cancel </v-btn>
+          <v-btn color="primary" @click="validatePassword"> Continue </v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="e6 > 2" step="2">
+        <v-stepper-step :complete="step > 2" step="2">
           Personal Information
         </v-stepper-step>
 
@@ -97,11 +99,11 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-btn color="primary" @click="e6 = 3"> Continue </v-btn>
-          <v-btn text> Cancel </v-btn>
+          <v-btn color="primary" @click="step = 3"> Continue </v-btn>
+          <v-btn text @click="step -= 1"> Back </v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="e6 > 3" step="3">
+        <v-stepper-step :complete="step > 3" step="3">
           University Information
         </v-stepper-step>
 
@@ -129,7 +131,7 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-btn color="primary" @click="e6 = 4"> Continue </v-btn>
+          <v-btn color="primary" @click="step = 4"> Continue </v-btn>
           <v-btn text> Cancel </v-btn>
         </v-stepper-content>
 
@@ -166,7 +168,7 @@ export default {
   },
   data() {
     return {
-      e6: 1,
+      step: 1,
       showPassword: false,
       isError: false,
       showConfirmPassword: false,
@@ -183,8 +185,9 @@ export default {
       isValidateLink: false,
       data: [],
       rules: {
-        required: (value) => !!value || "Required.",
+        required: (v) => !!v || "Required.",
         min: (v) => v.length >= 8 || "Min 8 characters",
+        matchPassword: (v) => this.password == v || "Password not match",
         emailMatch: () => `The email and password you entered don't match`,
       },
     };
@@ -218,14 +221,14 @@ export default {
           this.data = response.data;
           this.university = this.data.university;
           this.course = this.data.courses[0].university_course_id;
-          this.email = this.data.email
+          this.email = this.data.email;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    register(){
-      if(this.checkbox){
+    register() {
+      if (this.checkbox) {
         axios
           .post("http://localhost:3000/api/auth/v1/register", {
             email: this.email,
@@ -241,14 +244,19 @@ export default {
           },
           })
           .then((response) => {
-            this.$store.commit("updateAuth",response.data)
-            this.$router.push({name:'SocializingHome'})
+            this.$store.commit("updateAuth", response.data);
+            this.$router.push({ name: "SocializingHome" });
           })
           .catch((error) => {
             console.log(error);
           });
       }
-    }
+    },
+    validatePassword() {
+      if (this.$refs.passwordform.validate()) {
+        this.step = 2;
+      }
+    },
   },
   mounted() {
     this.checkToken();
