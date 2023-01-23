@@ -34,6 +34,14 @@ const routes = [
             /* webpackChunkName: "view-socializing-search" */ "@/views/socializing/Search"
           ),
       },
+      {
+        path: "people",
+        name: "People",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-socializing-search" */ "@/views/socializing/People"
+          ),
+      },
     ],
   },
   {

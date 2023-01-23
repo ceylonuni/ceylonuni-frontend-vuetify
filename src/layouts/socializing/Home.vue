@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app flat color="white" align-center>
+    <v-app-bar app flat color="white" align-center clipped-right>
       <v-text-field
         background-color="grey lighten-4"
         solo
