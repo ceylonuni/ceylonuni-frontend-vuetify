@@ -27,19 +27,19 @@ const routes = [
           ),
       },
       {
+        path: "people",
+        name: "SocializingPeople",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-socializing-people" */ "@/views/socializing/People"
+          ),
+      },
+      {
         path: "search",
         name: "SearchResults",
         component: () =>
           import(
             /* webpackChunkName: "view-socializing-search" */ "@/views/socializing/Search"
-          ),
-      },
-      {
-        path: "people",
-        name: "People",
-        component: () =>
-          import(
-            /* webpackChunkName: "view-socializing-search" */ "@/views/socializing/People"
           ),
       },
     ],

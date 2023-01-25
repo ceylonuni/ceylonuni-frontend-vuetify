@@ -47,6 +47,19 @@
           <v-icon small class="mr-3">mdi-account-check</v-icon>Requested
         </v-chip>
         <v-btn
+        v-else-if="data.send_requests.includes(auth.student.id)"
+          outlined
+          rounded
+          text
+          max-width="150"
+          small
+          class="mt-3 ml-1"
+          :loading="isApiLoading"
+          @click="acceptRequest()"
+        >
+          <v-icon small class="mr-3">mdi-account-plus</v-icon> Accept
+        </v-btn>
+        <v-btn
           outlined
           rounded
           text
@@ -83,6 +96,26 @@ export default {
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/friend/send-request",
+          { student_id: this.data.id },
+          {
+            headers: {
+              Authorization: "Bearer " + this.auth.token,
+            },
+          }
+        )
+        .then(() => {
+          this.$emit("getData");
+          this.isApiLoading = false
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    acceptRequest() {
+      this.isApiLoading = true
+      axios
+        .post(
+          "http://localhost:3002/api/socializing/v1/friend/accept-request",
           { student_id: this.data.id },
           {
             headers: {

@@ -15,7 +15,7 @@
       />
       <v-divider vertical inset class="mx-3" />
 
-      <v-btn elevation="0" small text rounded class="text-capitalize">
+      <v-btn elevation="0" small text rounded :to="{name:'SocializingHome'}" class="text-capitalize">
         <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
@@ -73,7 +73,7 @@
             </v-btn>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item v-for="item in items" :key="item.title" :to="{name:item.route}" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -111,9 +111,9 @@ export default {
     drawer: true,
     isCreatePost: false,
     items: [
-      { title: "Home", icon: "mdi-home" },
-      { title: "My Account", icon: "mdi-account" },
-      { title: "Friends", icon: "mdi-account-multiple" },
+      { title: "Home", icon: "mdi-home",route:'SocializingHome' },
+      { title: "My Account", icon: "mdi-account", route:'' },
+      { title: "Peoples", icon: "mdi-account-multiple",route:'SocializingPeople' },
     ],
     mini: false,
     searchKey: "",
@@ -128,7 +128,7 @@ export default {
     search(){
       this.$router.push({ name: 'SearchResults', query: { q: this.searchKey }})
       console.log(this.searchKey)
-    }
+    },
   },
 };
 </script>

@@ -9,20 +9,22 @@
         align-center
       "
     >
-      <div
-        class="pa-3"
-        v-for="(people, i) in results.filter(
-          (element) => element.type == 'people'
-        )"
-        :key="i + 'people'"
-      >
-        <PeopleCard :data="people"></PeopleCard>
+      <div class="pa-3" v-for="(people, i) in results" :key="i + 'people'">
+        <PeopleCard
+          :data="people"
+          @getData="getPeople(selctedKey)"
+        ></PeopleCard>
       </div>
     </v-col>
     <v-col class="flex-grow-0 flex-shrink-0">
       <v-navigation-drawer app clipped permanent right color="transparent">
         <v-list dense>
-          <v-list-item v-for="item in filters" :key="item.title" link>
+          <v-list-item
+            v-for="item in filters"
+            :key="item.title"
+            @click="getPeople(item.key)"
+            link
+          >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -38,6 +40,8 @@
 </template>
 
 <script>
+const axios = require("axios").default;
+import { mapState } from "vuex";
 export default {
   components: {
     PeopleCard: () =>
@@ -47,61 +51,95 @@ export default {
   },
   data() {
     return {
+      isApiLoading: false,
       filters: [
-        { title: "All", icon: "mdi-ballot" },
-        { title: "Friends", icon: "mdi-account-multiple" },
-        { title: "Friend Request", icon: "mdi-account-multiple-plus" },
-        { title: "Suggestions", icon: "mdi-account-multiple-check" },
-      ],
-
-      results: [
+        { title: "All", icon: "mdi-ballot", key: "all" },
+        { title: "Friends", icon: "mdi-account-multiple", key: "friends" },
         {
-          type: "people",
-          name: "Josiah Prathaban",
-          university: "University of Kelaniya",
-          faculty: "Faculty of Science",
-          isFriend: true,
+          title: "Friend Request",
+          icon: "mdi-account-multiple-plus",
+          key: "requests",
         },
         {
-          type: "people",
-          name: "Kumar Kanunakaran",
-          university: "University of Colombo",
-          faculty: "Faculty of Arts",
-          isFriend: false,
-        },
-        {
-          type: "people",
-          name: "Josiah Prathaban",
-          university: "University of Kelaniya",
-          faculty: "Faculty of Science",
-          isFriend: true,
-        },
-        {
-          type: "people",
-          name: "Kumar Kanunakaran",
-          university: "University of Colombo",
-          faculty: "Faculty of Arts",
-          isFriend: false,
-        },
-        {
-          type: "people",
-          name: "Josiah Prathaban",
-          university: "University of Kelaniya",
-          faculty: "Faculty of Science",
-          isFriend: true,
-        },
-        {
-          type: "people",
-          name: "Kumar Kanunakaran",
-          university: "University of Colombo",
-          faculty: "Faculty of Arts",
-          isFriend: false,
+          title: "Suggestions",
+          icon: "mdi-account-multiple-check",
+          key: "suggestions",
         },
       ],
+      selctedKey: null,
+      results: [],
     };
   },
-
+  computed: mapState({
+    auth: (state) => state.auth.data,
+  }),
+  mounted() {
+    this.getAll();
+  },
   methods: {
+    getRequests() {
+      this.isApiLoading = true;
+      axios
+        .get("http://localhost:3002/api/socializing/v1/general/requests", {
+          headers: {
+            Authorization: "Bearer " + this.auth.token,
+          },
+        })
+        .then((response) => {
+          this.results = response.data;
+          this.isApiLoading = false;
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getFriends() {
+      this.isApiLoading = true;
+      axios
+        .get("http://localhost:3002/api/socializing/v1/friend/all", {
+          headers: {
+            Authorization: "Bearer " + this.auth.token,
+          },
+        })
+        .then((response) => {
+          this.results = response.data;
+          this.isApiLoading = false;
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getAll() {
+      this.isApiLoading = true;
+      axios
+        .get("http://localhost:3002/api/socializing/v1/general/students", {
+          headers: {
+            Authorization: "Bearer " + this.auth.token,
+          },
+        })
+        .then((response) => {
+          this.results = response.data;
+          this.isApiLoading = false;
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getPeople(key) {
+      this.selctedKey = key;
+      if (this.selctedKey == "all") {
+        this.getAll();
+      } else if (this.selctedKey == "requests") {
+        this.getRequests();
+      } else if (this.selctedKey == "friends") {
+        this.getFriends();
+      } else {
+        this.getAll();
+      }
+    },
     getPosts() {
       //
     },
