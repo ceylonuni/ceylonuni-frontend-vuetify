@@ -118,7 +118,7 @@ export default {
       if (this.step == 1) {
         // verify email
         axios
-          .post("http://localhost:3000/api/auth/v1/email/verify", {
+          .post(`${this.$api.servers.auth}/email/verify`, {
             email: this.email,
           })
           .then((response) => {
@@ -137,7 +137,7 @@ export default {
       } else if (this.step == 2) {
         // login email password
         axios
-          .post("http://localhost:3000/api/auth/v1/login", {
+          .post(`${this.$api.servers.auth}/login`, {
             email: this.email,
             password: this.password,
           })
@@ -152,7 +152,7 @@ export default {
       } else if (this.step == 3) {
         // send verification email
         axios
-          .post("http://localhost:3000/api/auth/v1/email/send", {
+          .post(`${this.$api.servers.auth}/email/send`, {
             email: this.email,
           })
           .then((response) => {
