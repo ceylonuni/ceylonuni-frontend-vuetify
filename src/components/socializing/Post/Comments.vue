@@ -1,6 +1,6 @@
 <template>
   <div class="mx-5">
-    <div class="d-flex align-center pb-3" v-for="(comment,i) in data.comments" :key="i">
+    <div @click="goAccount()" class="d-flex align-center pb-3" v-for="(comment,i) in data.comments" :key="i">
       <v-avatar color="teal" size="40">
         <img
             v-if="comment.students.image_url"
@@ -56,6 +56,9 @@ export default {
     auth: (state) => state.auth.data,
   }),
   methods:{
+    goAccount(){
+     this.$router.push({name:'AuthMyAccount',params:{username:this.data.students.accounts[0].username}})
+    },
     submit() {
       axios
         .post(

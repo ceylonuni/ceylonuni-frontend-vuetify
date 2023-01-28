@@ -1,7 +1,7 @@
 <template>
   <v-card class="py-2" outlined rounded="lg" max-width="600">
     <v-list-item>
-      <v-list-item-avatar size="100" rounded="circle" color="grey">
+      <v-list-item-avatar @click="goAccount()" size="100" rounded="circle" color="grey">
         <v-img
           v-if="data.image_url"
           class="ml-auto mr-auto"
@@ -15,7 +15,7 @@
         >
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="text-h6">
+        <v-list-item-title @click="goAccount()" class="text-h6">
           {{ data.first_name }} {{ data.last_name }}
         </v-list-item-title>
         <v-list-item-subtitle class="mt-1 ml-1">
@@ -91,6 +91,9 @@ export default {
     }
   },
   methods: {
+    goAccount(){
+     this.$router.push({name:'AuthMyAccount',params:{username:this.data.accounts[0].username}})
+    },
     sendRequest() {
       this.isApiLoading = true
       axios

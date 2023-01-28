@@ -42,6 +42,14 @@ const routes = [
             /* webpackChunkName: "view-socializing-search" */ "@/views/socializing/Search"
           ),
       },
+      {
+        path: "account/:username",
+        name: "AuthMyAccount",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-auth-account" */ "@/views/auth/Account"
+          ),
+      },
     ],
   },
   {

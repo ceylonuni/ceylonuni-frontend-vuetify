@@ -15,7 +15,14 @@
       />
       <v-divider vertical inset class="mx-3" />
 
-      <v-btn elevation="0" small text rounded :to="{name:'SocializingHome'}" class="text-capitalize">
+      <v-btn
+        elevation="0"
+        small
+        text
+        rounded
+        :to="{ name: 'SocializingHome' }"
+        class="text-capitalize"
+      >
         <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
@@ -73,7 +80,12 @@
             </v-btn>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-for="item in items" :key="item.title" :to="{name:item.route}" link>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          :to="item.route"
+          link
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -85,7 +97,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="d-flex" style="background-color: rgb(245, 250, 250);">
+    <v-main class="d-flex" style="background-color: rgb(245, 250, 250)">
       <v-container fluid>
         <router-view></router-view>
       </v-container>
@@ -100,6 +112,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   components: {
     DialogCreatePost: () =>
@@ -107,20 +120,27 @@ export default {
         /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/NewPostDialog"
       ),
   },
+  computed: mapState({
+    auth: (state) => state.auth.data,
+  }),
   data: () => ({
     drawer: true,
     isCreatePost: false,
     items: [
-      { title: "Home", icon: "mdi-home",route:'SocializingHome' },
-      { title: "My Account", icon: "mdi-account", route:'' },
-      { title: "Peoples", icon: "mdi-account-multiple",route:'SocializingPeople' },
+     
     ],
     mini: false,
     searchKey: "",
   }),
+  created(){
+    this.items =  [{ title: "Home", icon: "mdi-home",route:{name:'SocializingHome'} },
+      { title: "My Account", icon: "mdi-account",route:{name:'AuthMyAccount',params:{username: this.auth.student.username}}},
+      { title: "Peoples", icon: "mdi-account-multiple",route:{name:'SocializingPeople'}}]
+  },
   methods: {
     createPost() {
       this.isCreatePost = true;
+   
     },
     closeCreatePost() {
       this.isCreatePost = false;

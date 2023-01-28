@@ -3,8 +3,8 @@
     <ImagePost :data="data.image_url" v-if="data.image_url" />
     <VideoPost :data="data.video_url" v-else-if="data.video_url" />
     <TextPost :data="data.text" v-else />
-    <v-card-subtitle class="pb-0 d-flex align-center justify-space-between">
-      <div class="d-flex align-center">
+    <v-card-subtitle  class="pb-0 d-flex align-center justify-space-between">
+      <div @click="goAccount(data)" class="d-flex align-center">
         <v-avatar color="teal">
           <img
             v-if="data.students.image_url"
@@ -133,6 +133,10 @@ export default {
       this.commentsPanel = !this.commentsPanel;
     },
     share() {},
+    goAccount(data){
+      console.log(data)
+     this.$router.push({name:'AuthMyAccount',params:{username:data.students.accounts[0].username}})
+    },
     getPosts() {
       this.$emit("getPosts");
     },
