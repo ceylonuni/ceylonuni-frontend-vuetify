@@ -26,7 +26,7 @@
         <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
-      <v-btn elevation="0" small text rounded :to="{name:'EventHome'}" class="text-capitalize">
+      <v-btn elevation="0" small text rounded class="text-capitalize">
         <v-icon small color="grey darken-1"> mdi-calendar-star </v-icon>
         events
       </v-btn>
@@ -75,8 +75,8 @@
             <v-icon>mdi-lightning-bolt</v-icon>
           </v-list-item-icon>
           <v-list-item-content v-if="!mini">
-            <v-btn small color="primary" @click="createPost" dark
-              ><v-icon left> mdi-lightning-bolt </v-icon> Create Post
+            <v-btn small color="primary" :to="{name:'NewEvent'}" dark
+              ><v-icon left> mdi-lightning-bolt </v-icon> Create Event
             </v-btn>
           </v-list-item-content>
         </v-list-item>
@@ -133,9 +133,11 @@ export default {
     searchKey: "",
   }),
   created(){
-    this.items =  [{ title: "Home", icon: "mdi-home",route:{name:'SocializingHome'} },
-      { title: "My Account", icon: "mdi-account",route:{name:'AuthMyAccount',params:{username: this.auth.student.username}}},
-      { title: "Peoples", icon: "mdi-account-multiple",route:{name:'SocializingPeople'}}]
+    this.items =  [
+    { title: "All Events", icon: "mdi-account-multiple",route:{name:'SocializingPeople'}},
+      { title: "Your Events", icon: "mdi-home",route:{name:'SocializingHome'} },
+      { title: "Interested Events", icon: "mdi-account",route:{name:'AuthMyAccount',params:{username: this.auth.student.username}}},
+     ]
   },
   methods: {
     createPost() {

@@ -53,6 +53,40 @@ const routes = [
     ],
   },
   {
+    path: "/event",
+    component: () =>
+      import(
+        /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/event/Home"
+      ),
+    beforeEnter: multiguard([loggedIn]),
+    children: [
+      {
+        path: "",
+        name: "EventHome",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-home" */ "@/views/event/Home"
+          ),
+      },
+      {
+        path: "new",
+        name: "NewEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-New" */ "@/views/event/New"
+          ),
+      },
+      {
+        path: ":key",
+        name: "EventRead",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-read" */ "@/views/event/Read"
+          ),
+      },
+    ],
+  },
+  {
     path: "/entry",
     component: () =>
       import(
