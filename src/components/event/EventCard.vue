@@ -77,55 +77,46 @@
     </v-list-item>
   </v-card> -->
 
-    <v-card >
+    <v-card>
       <v-img
-        :src="data.src"
+        :src="
+          data.image_url
+            ? data.image_url
+            : 'https://cdn.vuetifyjs.com/images/cards/server-room.jpg'
+        "
         class="white--text align-end"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="200px"
       >
-        <v-card-title v-text="data.title"></v-card-title>
+        <v-card-title v-text="data.name"></v-card-title>
       </v-img>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-        class="mr-3"
+          class="mr-3"
           color="primary"
           dark
-          :to="{name:'EventRead',params:{key:'123456'}}"
+          :to="{ name: 'EventRead', params: { key: data.key } }"
         >
-        View
+          View
         </v-btn>
-        <v-menu
-      bottom
-      origin="center center"
-      transition="scale-transition"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-          outlined
-        >
-        Interested
-        </v-btn>
-      </template>
+        <v-menu bottom origin="center center" transition="scale-transition">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn :loading="isApiLoading" color="primary" dark v-bind="attrs" v-on="on" :outlined="!data.participants[0]">
+              <span v-if="data.participants[0] && data.participants[0].status == 'going'">Going</span> <span v-else>Interested</span>
+            </v-btn>
+          </template>
 
-      <v-list>
-        <v-list-item
-        >
-          <v-list-item-title>Interested</v-list-item-title>
-        </v-list-item>
-        <v-list-item
-        >
-          <v-list-item-title>Going</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-
+          <v-list>
+            <v-list-item @click="sendInterest('interested')">
+              <v-list-item-title><span :class="data.participants[0] && data.participants[0].status == 'interested' ? 'teal--text' : 'black--text'">Interested</span></v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="sendInterest('going')">
+              <v-list-item-title><span :class="data.participants[0] && data.participants[0].status == 'going' ? 'teal--text' : 'black--text'">Going</span></v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-card-actions>
     </v-card>
   </div>
@@ -151,32 +142,12 @@ export default {
         params: { username: this.data.accounts[0].username },
       });
     },
-    sendRequest() {
+    sendInterest(status) {
       this.isApiLoading = true;
       axios
         .post(
-          "http://localhost:3002/api/socializing/v1/friend/send-request",
-          { student_id: this.data.id },
-          {
-            headers: {
-              Authorization: "Bearer " + this.auth.token,
-            },
-          }
-        )
-        .then(() => {
-          this.$emit("getData");
-          this.isApiLoading = false;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    acceptRequest() {
-      this.isApiLoading = true;
-      axios
-        .post(
-          "http://localhost:3002/api/socializing/v1/friend/accept-request",
-          { student_id: this.data.id },
+          `${this.$api.servers.event}/participant/add`,
+          { event_id: this.data.id, status: status },
           {
             headers: {
               Authorization: "Bearer " + this.auth.token,

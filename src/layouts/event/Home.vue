@@ -134,7 +134,7 @@ export default {
   }),
   created(){
     this.items =  [
-    { title: "All Events", icon: "mdi-account-multiple",route:{name:'SocializingPeople'}},
+    { title: "All Events", icon: "mdi-account-multiple",route:{name:'EventHome'}},
       { title: "Your Events", icon: "mdi-home",route:{name:'SocializingHome'} },
       { title: "Interested Events", icon: "mdi-account",route:{name:'AuthMyAccount',params:{username: this.auth.student.username}}},
      ]
