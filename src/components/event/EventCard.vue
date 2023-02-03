@@ -88,6 +88,7 @@
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="200px"
       >
+      <v-chip class="ma-2" v-if="data.student_id == auth.student.id"> {{ data.status }} </v-chip>
         <v-card-title v-text="data.name"></v-card-title>
       </v-img>
 
@@ -103,20 +104,88 @@
         </v-btn>
         <v-menu bottom origin="center center" transition="scale-transition">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn :loading="isApiLoading" color="primary" dark v-bind="attrs" v-on="on" :outlined="!data.participants[0]">
-              <span v-if="data.participants[0] && data.participants[0].status == 'going'">Going</span> <span v-else>Interested</span>
+            <v-btn
+              :loading="isApiLoading"
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+              :outlined="!data.participants[0]"
+            >
+              <span
+                v-if="
+                  data.participants[0] && data.participants[0].status == 'going'
+                "
+                >Going</span
+              >
+              <span v-else>Interested</span>
             </v-btn>
           </template>
 
           <v-list>
             <v-list-item @click="sendInterest('interested')">
-              <v-list-item-title><span :class="data.participants[0] && data.participants[0].status == 'interested' ? 'teal--text' : 'black--text'">Interested</span></v-list-item-title>
+              <v-list-item-title
+                ><span
+                  :class="
+                    data.participants[0] &&
+                    data.participants[0].status == 'interested'
+                      ? 'teal--text'
+                      : 'black--text'
+                  "
+                  >Interested</span
+                ></v-list-item-title
+              >
             </v-list-item>
             <v-list-item @click="sendInterest('going')">
-              <v-list-item-title><span :class="data.participants[0] && data.participants[0].status == 'going' ? 'teal--text' : 'black--text'">Going</span></v-list-item-title>
+              <v-list-item-title
+                ><span
+                  :class="
+                    data.participants[0] &&
+                    data.participants[0].status == 'going'
+                      ? 'teal--text'
+                      : 'black--text'
+                  "
+                  >Going</span
+                ></v-list-item-title
+              >
             </v-list-item>
           </v-list>
         </v-menu>
+      </v-card-actions>
+      <v-divider v-if="isCollborated"></v-divider>
+      <v-card-actions v-if="isCollborated">
+        <v-spacer></v-spacer>
+        <v-btn
+          class="mr-3"
+          @click="accept()"
+          :loading="isAcceptApiLoading"
+          color="primary"
+          :disabled="collboratedStatus"
+        >
+          <span v-if="collboratedStatus">Collborated</span
+          ><span v-else>Accept</span>
+        </v-btn>
+        <v-btn
+          @click="leave()"
+          :loading="isLeaveApiLoading"
+          v-if="collboratedStatus"
+          color="primary"
+          dark
+          outlined
+        >
+          Leave
+        </v-btn>
+
+        <v-btn
+          @click="reject()"
+          :loading="isRejectApiLoading"
+          v-else
+          color="primary"
+          dark
+          outlined
+        >
+          Reject
+        </v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -125,7 +194,7 @@
 const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
-  props: ["data"],
+  props: ["data", "isCollborated", "collboratedStatus"],
 
   computed: mapState({
     auth: (state) => state.auth.data,
@@ -133,6 +202,9 @@ export default {
   data() {
     return {
       isApiLoading: false,
+      isAcceptApiLoading: false,
+      isLeaveApiLoading: false,
+      isRejectApiLoading: false,
     };
   },
   methods: {
@@ -159,6 +231,70 @@ export default {
           this.isApiLoading = false;
         })
         .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    accept() {
+      this.isAcceptApiLoading = true;
+      axios
+        .post(
+          `${this.$api.servers.event}/collaborator/accept`,
+          { event_id: this.data.id },
+          {
+            headers: {
+              Authorization: "Bearer " + this.auth.token,
+            },
+          }
+        )
+        .then(() => {
+          this.$emit("getData");
+          this.isAcceptApiLoading = false;
+        })
+        .catch((error) => {
+          this.isAcceptApiLoading = false;
+          console.log(error);
+        });
+    },
+    leave() {
+      this.isLeaveApiLoading = true;
+      axios
+        .post(
+          `${this.$api.servers.event}/collaborator/leave`,
+          { event_id: this.data.id },
+          {
+            headers: {
+              Authorization: "Bearer " + this.auth.token,
+            },
+          }
+        )
+        .then(() => {
+          this.$emit("getData");
+          this.isLeaveApiLoading = false;
+        })
+        .catch((error) => {
+          this.isLeaveApiLoading = false;
+          console.log(error);
+        });
+    },
+    reject() {
+      this.isRejectApiLoading = true;
+      axios
+        .post(
+          `${this.$api.servers.event}/collaborator/leave`,
+          { event_id: this.data.id },
+          {
+            headers: {
+              Authorization: "Bearer " + this.auth.token,
+            },
+          }
+        )
+        .then(() => {
+          this.$emit("getData");
+          this.isRejectApiLoading = false;
+        })
+        .catch((error) => {
+          this.isRejectApiLoading = false;
           console.log(error);
         });
     },

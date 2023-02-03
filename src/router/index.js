@@ -85,6 +85,14 @@ const routes = [
           ),
       },
       {
+        path: "collborated",
+        name: "YourCollboratedEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-collborated" */ "@/views/event/Collborated"
+          ),
+      },
+      {
         path: "new",
         name: "NewEvent",
         component: () =>

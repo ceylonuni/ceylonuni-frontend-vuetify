@@ -137,6 +137,7 @@ export default {
     { title: "All Events", icon: "mdi-account-multiple",route:{name:'EventHome'}},
       { title: "Your Events", icon: "mdi-home",route:{name:'YourEvent'} },
       { title: "Interested Events", icon: "mdi-account",route:{name:'YourInterestedEvent'}},
+      { title: "Collborated Events", icon: "mdi-account",route:{name:'YourCollboratedEvent'}},
      ]
   },
   methods: {

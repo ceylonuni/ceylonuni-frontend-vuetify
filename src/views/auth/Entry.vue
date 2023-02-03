@@ -75,6 +75,7 @@
           :disabled="step === 4 || step === 5"
           color="primary"
           depressed
+          :loading="isApiLoading"
         >
           {{ step == 3 ? "Confirm" : "Next" }}
         </v-btn>
@@ -95,6 +96,7 @@ export default {
     email: null,
     password: null,
     step: 1,
+    isApiLoading: false,
   }),
 
   computed: {
@@ -116,6 +118,7 @@ export default {
   methods: {
     verifyEmail() {
       if (this.step == 1) {
+        this.isApiLoading = true
         // verify email
         axios
           .post(`${this.$api.servers.auth}/email/verify`, {
@@ -123,6 +126,7 @@ export default {
           })
           .then((response) => {
             console.log(response);
+            this.isApiLoading = false
             if (response.data.existing) {
               this.step = 2;
             } else if (response.data.valid) {
@@ -132,9 +136,11 @@ export default {
             }
           })
           .catch((error) => {
+            this.isApiLoading = false
             console.log(error);
           });
       } else if (this.step == 2) {
+        this.isApiLoading = true
         // login email password
         axios
           .post(`${this.$api.servers.auth}/login`, {
@@ -142,24 +148,29 @@ export default {
             password: this.password,
           })
           .then((response) => {
+            this.isApiLoading = false
             this.$store.commit("updateAuth",response.data)
             this.$router.push({name:'SocializingHome'})
             console.log(response);
           })
           .catch((error) => {
+            this.isApiLoading = false
             console.log(error);
           });
       } else if (this.step == 3) {
+        this.isApiLoading = true
         // send verification email
         axios
           .post(`${this.$api.servers.auth}/email/send`, {
             email: this.email,
           })
           .then((response) => {
+            this.isApiLoading = false
             console.log(response);
             this.step = 5;
           })
           .catch((error) => {
+            this.isApiLoading = false
             console.log(error);
           });
       }

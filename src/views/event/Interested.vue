@@ -1,7 +1,7 @@
 <template>
   <v-row dense>
     <v-col v-for="event in events" :key="event.id" cols="4">
-        <EventCard :data="event.events" @getData="getEvents()" />
+        <EventCard :data="event.events" :isCollborated="false" @getData="getEvents()" />
     </v-col>
   </v-row>
 </template>

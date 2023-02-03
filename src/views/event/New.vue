@@ -31,8 +31,9 @@
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       <span v-if="venue">{{ venue }}</span
-                      ><span v-else>Venue</span> |
-                      {{ startDate }} {{ startTime }} - {{ endDate }} {{ endTime }}</v-list-item-subtitle
+                      ><span v-else>Venue</span> | {{ startDate }}
+                      {{ startTime }} - {{ endDate }}
+                      {{ endTime }}</v-list-item-subtitle
                     >
                   </v-list-item-content>
                 </v-list-item>
@@ -156,6 +157,7 @@
     </v-row>
     <div>
       <v-row>
+        {{ selectedStudents }}
         <v-col>
           <div>
             <v-menu
@@ -231,8 +233,68 @@
         </v-col>
       </v-row>
     </div>
-    <div>
-    <v-btn class="mt-3" color="primary" @click="submit()">Create Event</v-btn>
+    <v-row>
+      <v-col>
+        <template v-slot:prepend-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-text-field
+                v-model="searchTerm"
+                placeholder="Search"
+                @input="searchStudents"
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider class="mt-2"></v-divider> </template></v-col
+    ></v-row>
+
+    <v-select
+      v-model="selectedStudents"
+      :items="students"
+      item-text="first_name"
+      item-value="id"
+      attach
+      label="Add colaborators"
+      multiple
+      rounded
+      filled
+    >
+      <template v-slot:prepend-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-text-field
+              v-model="searchTerm"
+              placeholder="Search"
+              @input="searchStudents"
+            ></v-text-field>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider class="mt-2"></v-divider>
+      </template>
+      <template v-slot:item="{ item }">
+        <template>
+          <v-list-item-avatar>
+            <v-avatar color="teal">
+            <img
+            v-if="item.image_url"
+            :src="item.image_url"
+            :alt="item.first_name"
+          />
+          <span v-else class="white--text text-h6"
+            >{{ item.first_name[0]
+            }}{{ item.last_name[0] }}</span
+          >
+          </v-avatar> 
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title >{{ item.first_name }} {{ item.last_name }}</v-list-item-title>
+          </v-list-item-content>
+        </template>
+      </template>
+    
+    </v-select>
+    <div class="text-right">
+      <v-btn class="mt-3" color="primary" :loading="isApiLoading" @click="submit()">Create Event</v-btn>
     </div>
   </div>
 </template>
@@ -259,14 +321,20 @@ export default {
       menu2: false,
       menu3: false,
       menu4: false,
-      endTime: '22:00',
-      startTime: '08:00',
+      endTime: "22:00",
+      startTime: "08:00",
+      studentsCopy: [],
+      selectedStudents: [],
+      searchTerm: "",
+      students: [],
     };
   },
   computed: mapState({
     auth: (state) => state.auth.data,
   }),
-  mounted() {},
+  mounted() {
+    this.getStudents();
+  },
   methods: {
     setValue(val) {
       this.date = val;
@@ -285,15 +353,19 @@ export default {
       }
     },
     submit() {
+      this.isApiLoading = true,
       axios
         .post(
           `${this.$api.servers.event}/add`,
           {
             image: this.image,
-            name : this.name,
-            venue : this.venue,
-            start_at : moment(this.startDate +' '+ this.startTime).toISOString(),
-            end_at : moment(this.endDate +' '+ this.endTime).toISOString()
+            name: this.name,
+            venue: this.venue,
+            collaborators: this.selectedStudents,
+            start_at: moment(
+              this.startDate + " " + this.startTime
+            ).toISOString(),
+            end_at: moment(this.endDate + " " + this.endTime).toISOString(),
           },
           {
             headers: {
@@ -302,11 +374,40 @@ export default {
           }
         )
         .then((response) => {
-          this.$router.push({name:'EventRead',params:{key: response.data.key}})
+          this.isApiLoading = false,
+          this.$router.push({
+            name: "EventRead",
+            params: { key: response.data.key },
+          });
+        })
+        .catch((error) => {
+          this.isApiLoading = false,
+          console.log(error);
+        });
+    },
+    getStudents() {
+      axios
+        .get(`${this.$api.servers.event}/general/get`, {
+          headers: {
+            Authorization: "Bearer " + this.auth.token,
+          },
+        })
+        .then((response) => {
+          this.students = response.data;
+          this.studentsCopy = [...this.students];
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    searchStudents() {
+      if (!this.searchTerm) {
+        this.students = this.studentsCopy;
+      }
+
+      this.students = this.studentsCopy.filter((name) => {
+        return name.last_name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1 || name.first_name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+      });
     },
   },
 };

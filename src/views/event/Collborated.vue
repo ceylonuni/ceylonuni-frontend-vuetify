@@ -1,7 +1,7 @@
 <template>
   <v-row dense>
     <v-col v-for="event in events" :key="event.id" cols="4">
-        <EventCard :data="event" :isCollborated="false" @getData="getEvents()" />
+        <EventCard :data="event.events" :isCollborated="true" :collboratedStatus="event.accepted_at" @getData="getEvents()" />
     </v-col>
   </v-row>
 </template>
@@ -52,7 +52,7 @@ export default {
       this.isApiLoading = true;
       axios
         .get(
-          `${this.$api.servers.event}/getYour`,
+          `${this.$api.servers.event}/getCollborated`,
           {
             headers: {
               Authorization: "Bearer " + this.auth.token,

@@ -12,7 +12,11 @@
       <v-card>
         <v-img
           height="100%"
-          :src="event.image_url ? event.image_url : 'https://cdn.vuetifyjs.com/images/cards/server-room.jpg'"
+          :src="
+            event.image_url
+              ? event.image_url
+              : 'https://cdn.vuetifyjs.com/images/cards/server-room.jpg'
+          "
         >
           <v-row align="end" class="fill-height">
             <v-col class="py-0">
@@ -24,9 +28,11 @@
                   <v-list-item-subtitle>
                     {{ event.venue }}
                     |
+                    {{ $moment(event.start_at).format("DD MMM YYYY hh:mm A") }}
+                    -
                     {{
-                      $moment(event.start_at).format("DD MMM YYYY hh:mm A")
-                    }} - {{  $moment(event.end_at).format("DD MMM YYYY hh:mm A") }}</v-list-item-subtitle
+                      $moment(event.end_at).format("DD MMM YYYY hh:mm A")
+                    }}</v-list-item-subtitle
                   >
                 </v-list-item-content>
               </v-list-item>
@@ -47,7 +53,12 @@
         </v-img>
       </v-card>
 
-      <v-btn width="50%" class="mt-3" color="primary" @click="createPost()"
+      <v-btn
+        width="50%"
+        v-if="checkStudent() && !isApiLoading"
+        class="mt-3"
+        color="primary"
+        @click="createPost()"
         >Create post</v-btn
       >
 
@@ -57,8 +68,12 @@
         </div>
       </div>
     </v-col>
-     <!-- dialogs -->
-     <DialogCreatePost v-if="isCreatePost" :event_id="event.id" :callbackClose="closeCreatePost" />
+    <!-- dialogs -->
+    <DialogCreatePost
+      v-if="isCreatePost"
+      :event_id="event.id"
+      :callbackClose="closeCreatePost"
+    />
   </v-row>
 </template>
 
@@ -71,7 +86,7 @@ export default {
       import(
         /* webpackChunkName: "component-event-post" */ "@/components/event/Post/PostFrame"
       ),
-      DialogCreatePost: () =>
+    DialogCreatePost: () =>
       import(
         /* webpackChunkName: "component-event-create-post" */ "@/components/event/NewPostDialog"
       ),
@@ -109,11 +124,21 @@ export default {
   methods: {
     createPost() {
       this.isCreatePost = true;
-   
+    },
+    checkStudent() {
+      if (
+        this.event.event_collaborators.find(
+          (e) => e.student_id === this.auth.student.id
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
     closeCreatePost() {
       this.isCreatePost = false;
-      this.getEvent()
+      this.getEvent();
     },
     getEvent() {
       this.isApiLoading = true;
