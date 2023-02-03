@@ -27,7 +27,7 @@ export default {
     getPosts(){
       axios
         .get(
-          "http://localhost:3000/api/socializing/post/collapse/all",
+          "http://localhost:3002/api/socializing/v1/post/collapse/all",
           {
             headers: {
               Authorization: "Bearer " + this.auth.token,

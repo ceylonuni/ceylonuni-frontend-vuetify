@@ -53,7 +53,7 @@
 const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
-  props: ["callbackClose"],
+  props: ["callbackClose","event_id"],
   components: {
     // Post: () =>
     //   import(
@@ -98,8 +98,9 @@ export default {
     submit() {
       axios
         .post(
-          "http://localhost:3002/api/socializing/v1/post/add",
+          `${this.$api.servers.event}/post/add`,
           {
+            event_id:this.event_id,
             text: this.text,
             image_url:this.image
           },

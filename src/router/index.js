@@ -27,6 +27,14 @@ const routes = [
           ),
       },
       {
+        path: "people",
+        name: "SocializingPeople",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-socializing-people" */ "@/views/socializing/People"
+          ),
+      },
+      {
         path: "search",
         name: "SearchResults",
         component: () =>
@@ -35,11 +43,69 @@ const routes = [
           ),
       },
       {
-        path: "people",
-        name: "People",
+        path: "account/:username",
+        name: "AuthMyAccount",
         component: () =>
           import(
-            /* webpackChunkName: "view-socializing-search" */ "@/views/socializing/People"
+            /* webpackChunkName: "view-auth-account" */ "@/views/auth/Account"
+          ),
+      },
+    ],
+  },
+  {
+    path: "/events",
+    component: () =>
+      import(
+        /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/event/Home"
+      ),
+    beforeEnter: multiguard([loggedIn]),
+    children: [
+      {
+        path: "all",
+        name: "EventHome",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-home" */ "@/views/event/Home"
+          ),
+      },
+      {
+        path: "your",
+        name: "YourEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-your" */ "@/views/event/Your"
+          ),
+      },
+      {
+        path: "interested",
+        name: "YourInterestedEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-your" */ "@/views/event/Interested"
+          ),
+      },
+      {
+        path: "collborated",
+        name: "YourCollboratedEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-collborated" */ "@/views/event/Collborated"
+          ),
+      },
+      {
+        path: "new",
+        name: "NewEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-New" */ "@/views/event/New"
+          ),
+      },
+      {
+        path: ":key",
+        name: "EventRead",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-read" */ "@/views/event/Read"
           ),
       },
     ],

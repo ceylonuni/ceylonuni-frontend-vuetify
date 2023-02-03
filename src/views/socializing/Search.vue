@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row >
     <v-col
       class="
         flex-grow-1 flex-shrink-0
@@ -9,25 +9,19 @@
         align-center
       "
     >
-      <div
-        class="pa-3"
-        v-for="(people, i) in results.filter(
-          (element) => element.type == 'people'
-        )"
-        :key="i + 'people'"
-      >
-        <PeopleCard :data="people"></PeopleCard>
+      <div class="pa-3" v-for="(people, i) in results.students" :key="i">
+        <PeopleCard :data="people" @getData="getData"></PeopleCard>
       </div>
-
-      <v-divider class="my-5"  />
       
+      <v-divider class="my-5" />
+
       <div
         class="pa-3"
-        v-for="(post, i) in results.filter((element) => element.type == 'post')"
+        v-for="(post, i) in results.posts"
         :key="i + 'post'"
         style="width: 100% !important"
       >
-        <Post :data="post" @getPosts="getPosts" />
+        <Post :data="post" @getPosts="getData"/>
       </div>
     </v-col>
     <v-col class="flex-grow-0 flex-shrink-0">
@@ -49,6 +43,8 @@
 </template>
 
 <script>
+const axios = require("axios").default;
+import { mapState } from "vuex";
 export default {
   components: {
     Post: () =>
@@ -72,64 +68,89 @@ export default {
         { title: "Events", icon: "mdi-calendar" },
       ],
 
-      results: [
-        {
-          type: "people",
-          name: "Josiah Prathaban",
-          university: "University of Kelaniya",
-          faculty: "Faculty of Science",
-          isFriend: true,
-        },
-        {
-          type: "people",
-          name: "Kumar Kanunakaran",
-          university: "University of Colombo",
-          faculty: "Faculty of Arts",
-          isFriend: false,
-        },
-        {
-          type: "post",
-          comments: [
-            {
-              created_at: "2022-09-18T17:13:29.737Z",
-              students: {
-                first_name: "Josiah",
-                image_url: null,
-                last_name: "Prathaban",
-              },
-              text: "Hello Josiah, How are you doing?",
-            },
-          ],
-          created_at: "2022-09-18T10:26:46.480Z",
-          id: 4,
-          image_url: null,
-          key: "3918f5ee-ce43-4032-94d1-9dd39dae171f",
-          like_count: 0,
-          likes: [
-            {
-              students: {
-                first_name: "Josiah",
-                id: 1,
-                image_url: null,
-                last_name: "Prathaban",
-              },
-            },
-          ],
-          students: {
-            first_name: "Josiah",
-            image_url: null,
-            last_name: "Prathaban",
-          },
-          text: "Hello Sachin!",
-          video_url: null,
-        },
-      ],
+      // results: [
+      //   {
+      //     type: "people",
+      //     name: "Josiah Prathaban",
+      //     university: "University of Kelaniya",
+      //     faculty: "Faculty of Science",
+      //     isFriend: true,
+      //   },
+      //   {
+      //     type: "people",
+      //     name: "Kumar Kanunakaran",
+      //     university: "University of Colombo",
+      //     faculty: "Faculty of Arts",
+      //     isFriend: false,
+      //   },
+      //   {
+      //     type: "post",
+      //     comments: [
+      //       {
+      //         created_at: "2022-09-18T17:13:29.737Z",
+      //         students: {
+      //           first_name: "Josiah",
+      //           image_url: null,
+      //           last_name: "Prathaban",
+      //         },
+      //         text: "Hello Josiah, How are you doing?",
+      //       },
+      //     ],
+      //     created_at: "2022-09-18T10:26:46.480Z",
+      //     id: 4,
+      //     image_url: null,
+      //     key: "3918f5ee-ce43-4032-94d1-9dd39dae171f",
+      //     like_count: 0,
+      //     likes: [
+      //       {
+      //         students: {
+      //           first_name: "Josiah",
+      //           id: 1,
+      //           image_url: null,
+      //           last_name: "Prathaban",
+      //         },
+      //       },
+      //     ],
+      //     students: {
+      //       first_name: "Josiah",
+      //       image_url: null,
+      //       last_name: "Prathaban",
+      //     },
+      //     text: "Hello Sachin!",
+      //     video_url: null,
+      //   },
+      // ],
+      isApiLoading: false,
+      results: [],
     };
   },
-
+  computed: mapState({
+    auth: (state) => state.auth.data,
+  }),
+  mounted() {
+    this.getData();
+  },
   methods: {
-    getPosts() {
-      //
+    getData() {
+      this.isApiLoading = true
+      axios
+        .post(
+          "http://localhost:3002/api/socializing/v1/general/search",
+          { key_word: this.$route.query.q },
+          {
+            headers: {
+              Authorization: "Bearer " + this.auth.token,
+            },
+          }
+        )
+        .then((response) => {
+          this.results = response.data;
+          this.isApiLoading = false
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

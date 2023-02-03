@@ -52,7 +52,7 @@ export default {
     submit() {
       axios
         .post(
-          "http://localhost:3000/api/profile/image-upload",
+          "http://localhost:3000/api/auth/v1/profile/image-upload",
           {
             image:this.image
           },

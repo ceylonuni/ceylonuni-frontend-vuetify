@@ -8,6 +8,14 @@ import vuetify from "./plugins/vuetify";
 import _ from "lodash";
 
 Vue.config.productionTip = false;
+var api = {
+  servers: {
+    auth: process.env.VUE_APP_URL_API_AUTH,
+    event: process.env.VUE_APP_URL_API_EVENT,
+    socializing: process.env.VUE_APP_URL_API_SOCIALIZING,
+  },
+};
+Vue.prototype.$api = api;
 Vue.prototype.$_ = _;
 new Vue({
   router,

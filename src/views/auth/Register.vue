@@ -195,7 +195,7 @@ export default {
   methods: {
     checkToken() {
       axios
-        .get("http://localhost:3000/api/auth/validate-link", {
+        .get("http://localhost:3000/api/auth/v1/validate-link", {
           headers: {
             Authorization: "Bearer " + this.$route.query.token,
           },
@@ -212,7 +212,7 @@ export default {
     },
     getRegisterData() {
       axios
-        .get("http://localhost:3000/api/auth/register", {
+        .get("http://localhost:3000/api/auth/v1/register", {
           headers: {
             Authorization: "Bearer " + this.$route.query.token,
           },
@@ -230,23 +230,19 @@ export default {
     register() {
       if (this.checkbox) {
         axios
-          .post(
-            "http://localhost:3000/api/auth/register",
-            {
-              email: this.email,
-              first_name: this.firstName,
-              last_name: this.lastName,
-              address: this.address,
-              password: this.password,
-              mobile: this.mobile,
-              university_course_id: this.course,
-            },
-            {
-              headers: {
-                Authorization: "Bearer " + this.$route.query.token,
-              },
-            }
-          )
+          .post("http://localhost:3000/api/auth/v1/register", {
+            email: this.email,
+            first_name:this.firstName,
+            last_name:this.lastName,
+            address:this.address,
+            password: this.password,
+            mobile:this.mobile,
+            university_course_id:this.course,
+          },{
+            headers: {
+            Authorization: "Bearer " + this.$route.query.token,
+          },
+          })
           .then((response) => {
             this.$store.commit("updateAuth", response.data);
             this.$router.push({ name: "SocializingHome" });
