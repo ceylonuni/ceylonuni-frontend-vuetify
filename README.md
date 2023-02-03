@@ -10,7 +10,7 @@
 ## ceylonuni-frontend-vuetify
 
 ### Project setup
-```
+
 1. Duplicate .env and update the database params
 ```
 cp .env.example .env.dev
