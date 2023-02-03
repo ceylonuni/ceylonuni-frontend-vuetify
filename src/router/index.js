@@ -53,7 +53,7 @@ const routes = [
     ],
   },
   {
-    path: "/event",
+    path: "/events",
     component: () =>
       import(
         /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/event/Home"
@@ -61,11 +61,27 @@ const routes = [
     beforeEnter: multiguard([loggedIn]),
     children: [
       {
-        path: "",
+        path: "all",
         name: "EventHome",
         component: () =>
           import(
             /* webpackChunkName: "view-event-home" */ "@/views/event/Home"
+          ),
+      },
+      {
+        path: "your",
+        name: "YourEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-your" */ "@/views/event/Your"
+          ),
+      },
+      {
+        path: "interested",
+        name: "YourInterestedEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-your" */ "@/views/event/Interested"
           ),
       },
       {

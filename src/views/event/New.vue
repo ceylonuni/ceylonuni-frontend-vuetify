@@ -141,7 +141,7 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-time-picker v-if="menu4" v-model="time" full-width>
+            <v-time-picker v-if="menu4" v-model="startTime" full-width>
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="menu4 = false">
                 Cancel
