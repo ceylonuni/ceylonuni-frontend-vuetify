@@ -35,6 +35,14 @@ const routes = [
           ),
       },
       {
+        path: "posts/:key",
+        name: "SocializingPostRead",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-socializing-post-read" */ "@/views/socializing/Read"
+          ),
+      },
+      {
         path: "search",
         name: "SearchResults",
         component: () =>
