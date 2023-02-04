@@ -1,8 +1,11 @@
 <template>
   <v-card class="mx-auto" max-width="600" flat outlined>
-    <ImagePost :data="data.image_url" v-if="data.image_url" />
+    <div @click="viewPost(data)">
+      <ImagePost :data="data.image_url" v-if="data.image_url" />
     <VideoPost :data="data.video_url" v-else-if="data.video_url" />
     <TextPost :data="data.text" v-else />
+    </div>
+   
     <v-card-subtitle v-if="data.events" class="pb-0 d-flex align-center justify-space-between">
       <div class="d-flex align-center">
         <div class="ml-2">
@@ -155,6 +158,9 @@ export default {
     },
     goEvent(data){
      this.$router.push({name:'AuthMyAccount',params:{username:data.students.accounts[0].username}})
+    },
+    viewPost(data){
+      this.$router.push({name:'SocializingPostRead',params:{key:data.key}})
     },
     getPosts() {
       this.$emit("getPosts");
