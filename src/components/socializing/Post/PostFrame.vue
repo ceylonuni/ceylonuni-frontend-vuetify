@@ -3,6 +3,23 @@
     <ImagePost :data="data.image_url" v-if="data.image_url" />
     <VideoPost :data="data.video_url" v-else-if="data.video_url" />
     <TextPost :data="data.text" v-else />
+    <v-card-subtitle v-if="data.events" class="pb-0 d-flex align-center justify-space-between">
+      <div class="d-flex align-center">
+        <div class="ml-2">
+          <div class="font-weight-bold">
+            Event: {{ data.events.name }}
+          </div>
+          <div class="text-caption">
+            {{ data.events.venue }}
+          </div>
+        </div>
+      </div>
+
+      <div>
+      <v-btn :to="{ name: 'EventRead', params: { key: data.events.key } }" color="primary">View Event</v-btn>
+      </div>
+    </v-card-subtitle>
+    <v-divider></v-divider>
     <v-card-subtitle  class="pb-0 d-flex align-center justify-space-between">
       <div @click="goAccount(data)" class="d-flex align-center">
         <v-avatar color="teal">
@@ -134,7 +151,9 @@ export default {
     },
     share() {},
     goAccount(data){
-      console.log(data)
+     this.$router.push({name:'AuthMyAccount',params:{username:data.students.accounts[0].username}})
+    },
+    goEvent(data){
      this.$router.push({name:'AuthMyAccount',params:{username:data.students.accounts[0].username}})
     },
     getPosts() {

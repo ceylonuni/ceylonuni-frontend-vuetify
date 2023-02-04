@@ -1,17 +1,8 @@
 <template>
   <v-row>
-    <v-col
-      class="
-        flex-grow-1 flex-shrink-0
-        d-flex
-        flex-column
-        justify-center
-        align-center
-      "
-    >
-      <v-card>
+    <v-col cols="8" class="flex-grow-1 flex-shrink-0">
+      <v-card width="100%">
         <v-img
-          height="100%"
           :src="
             event.image_url
               ? event.image_url
@@ -52,19 +43,28 @@
           </v-row>
         </v-img>
       </v-card>
-
-      <v-btn
-        width="50%"
-        v-if="checkStudent() && !isApiLoading"
-        class="mt-3"
-        color="primary"
-        @click="createPost()"
-        >Create post</v-btn
-      >
+      <div class="text-center">
+        <v-btn
+          width="50%"
+          v-if="checkStudent() && !isApiLoading"
+          class="mt-3"
+          color="primary"
+          @click="createPost()"
+          >Create post</v-btn
+        >
+      </div>
 
       <div v-if="!isApiLoading">
         <div class="pa-3" v-for="(post, i) in event.posts" :key="i">
           <Post :data="post" @getPosts="getPosts" />
+        </div>
+      </div>
+    </v-col>
+    <v-col class="flex-grow-0 flex-shrink-0">
+      <div style="width: 300px">
+        <div class="d-flex" style="position: fixed; right: 0">
+          <v-divider vertical class="mx-3" />
+          <Participant :items="event.participants" />
         </div>
       </div>
     </v-col>
@@ -85,6 +85,10 @@ export default {
     Post: () =>
       import(
         /* webpackChunkName: "component-event-post" */ "@/components/event/Post/PostFrame"
+      ),
+      Participant: () =>
+      import(
+        /* webpackChunkName: "component-event-participant" */ "@/components/event/Participant"
       ),
     DialogCreatePost: () =>
       import(
