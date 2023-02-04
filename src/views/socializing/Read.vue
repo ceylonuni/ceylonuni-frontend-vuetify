@@ -67,6 +67,25 @@
             <v-btn icon large color="grey" @click="share()" class="mx-1">
               <v-icon>mdi-share-outline</v-icon> 5
             </v-btn>
+            <v-menu bottom origin="center center" transition="scale-transition">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon large color="grey" @click="share()" class="mx-1" v-bind="attrs" v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item >
+                  <v-list-item-title>Edit</v-list-item-title>
+                </v-list-item>
+                <v-list-item >
+                  <v-list-item-title class="red--text">Delete</v-list-item-title>
+                </v-list-item>
+                <v-list-item >
+                  <v-list-item-title class="red--text">Report</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </div>
         </v-card-subtitle>
 

@@ -37,9 +37,31 @@
       <v-btn icon>
         <v-icon>mdi-bell</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-account-circle</v-icon>
-      </v-btn>
+      <v-menu bottom origin="center center" transition="scale-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            large
+            color="grey"
+            @click="share()"
+            class="mx-1"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>{{ auth.student.first_name }} {{ auth.student.last_name }}</v-list-item-title>
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item :to="{name:'AuthLogout'}">
+            <v-list-item-title class="red--text">Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn icon>
         <v-icon>mdi-cog</v-icon>
       </v-btn>
