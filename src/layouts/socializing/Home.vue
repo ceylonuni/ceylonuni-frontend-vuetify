@@ -26,7 +26,14 @@
         <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
-      <v-btn elevation="0" small text rounded :to="{name:'EventHome'}" class="text-capitalize">
+      <v-btn
+        elevation="0"
+        small
+        text
+        rounded
+        :to="{ name: 'EventHome' }"
+        class="text-capitalize"
+      >
         <v-icon small color="grey darken-1"> mdi-calendar-star </v-icon>
         events
       </v-btn>
@@ -37,9 +44,31 @@
       <v-btn icon>
         <v-icon>mdi-bell</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-account-circle</v-icon>
-      </v-btn>
+      <v-menu bottom origin="center center" transition="scale-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            large
+            color="grey"
+            @click="share()"
+            class="mx-1"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>{{ auth.student.first_name }} {{ auth.student.last_name }}</v-list-item-title>
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item :to="{name:'AuthLogout'}">
+            <v-list-item-title class="red--text">Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn icon>
         <v-icon>mdi-cog</v-icon>
       </v-btn>
@@ -126,28 +155,41 @@ export default {
   data: () => ({
     drawer: true,
     isCreatePost: false,
-    items: [
-     
-    ],
+    items: [],
     mini: false,
     searchKey: "",
   }),
-  created(){
-    this.items =  [{ title: "Home", icon: "mdi-home",route:{name:'SocializingHome'} },
-      { title: "My Account", icon: "mdi-account",route:{name:'AuthMyAccount',params:{username: this.auth.student.username}}},
-      { title: "Peoples", icon: "mdi-account-multiple",route:{name:'SocializingPeople'}}]
+  created() {
+    this.items = [
+      { title: "Home", icon: "mdi-home", route: { name: "SocializingHome" } },
+      {
+        title: "My Account",
+        icon: "mdi-account",
+        route: {
+          name: "AuthMyAccount",
+          params: { username: this.auth.student.username },
+        },
+      },
+      {
+        title: "Peoples",
+        icon: "mdi-account-multiple",
+        route: { name: "SocializingPeople" },
+      },
+    ];
   },
   methods: {
     createPost() {
       this.isCreatePost = true;
-   
     },
     closeCreatePost() {
       this.isCreatePost = false;
     },
-    search(){
-      this.$router.push({ name: 'SearchResults', query: { q: this.searchKey }})
-      console.log(this.searchKey)
+    search() {
+      this.$router.push({
+        name: "SearchResults",
+        query: { q: this.searchKey },
+      });
+      console.log(this.searchKey);
     },
   },
 };
