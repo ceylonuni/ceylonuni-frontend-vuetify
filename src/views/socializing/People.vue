@@ -74,7 +74,12 @@ export default {
     auth: (state) => state.auth.data,
   }),
   mounted() {
-    this.getAll();
+
+    var key = 'all'
+    if(this.$route.query.key){
+      key = this.$route.query.key
+    }
+    this.getPeople(key);
   },
   methods: {
     getRequests() {
@@ -130,6 +135,7 @@ export default {
     },
     getPeople(key) {
       this.selctedKey = key;
+      this.$router.push({name:'SocializingPeople', query:{key:this.selctedKey}})
       if (this.selctedKey == "all") {
         this.getAll();
       } else if (this.selctedKey == "requests") {
