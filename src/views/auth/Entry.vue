@@ -1,6 +1,11 @@
 <template>
   <v-card elevation="0" width="350" class="mx-auto" color="transparent">
     <Welcome />
+    <Error
+      v-if="isError"
+      :error="error"
+      :callbackReset="() => (isError = false)"
+    ></Error>
     <v-divider></v-divider>
     <v-card class="mx-auto" rounded="lg" outlined color="transparent">
       <v-card-title class="font-weight-regular justify-space-between teal--text pb-0">
@@ -97,6 +102,8 @@ export default {
     password: null,
     step: 1,
     isApiLoading: false,
+    isError: false,
+    error:null
   }),
 
   computed: {
@@ -137,7 +144,10 @@ export default {
           })
           .catch((error) => {
             this.isApiLoading = false
+            this.isError = true
+            this.error = error.response.data.message
             console.log(error);
+        
           });
       } else if (this.step == 2) {
         this.isApiLoading = true
@@ -155,6 +165,8 @@ export default {
           })
           .catch((error) => {
             this.isApiLoading = false
+            this.isError = true
+            this.error = error.response.data.message
             console.log(error);
           });
       } else if (this.step == 3) {
@@ -171,6 +183,8 @@ export default {
           })
           .catch((error) => {
             this.isApiLoading = false
+            this.isError = true
+            this.error = error.response.data.message
             console.log(error);
           });
       }

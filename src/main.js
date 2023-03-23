@@ -17,6 +17,7 @@ var api = {
 };
 Vue.prototype.$api = api;
 Vue.prototype.$_ = _;
+Vue.component("Error", () => import(/* webpackChunkName: "component-error" */ "@/components/Error.vue"));
 Vue.component("ReportDialog", () => import(/* webpackChunkName: "component-report-dialog" */ "@/components/Report/ReportDialog.vue"));
 new Vue({
   router,
