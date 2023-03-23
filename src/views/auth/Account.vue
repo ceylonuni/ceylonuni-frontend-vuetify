@@ -1,86 +1,104 @@
 <template>
   <v-row>
     <v-col
-      class="
-        flex-grow-1 flex-shrink-0
-        d-flex
-        flex-column
-        justify-center
-        align-center
-      "
+      class="flex-grow-1 flex-shrink-0 d-flex flex-column justify-center align-center"
     >
       <v-card width="100%" max-height="300">
         <v-img
           height="100%"
           src="https://img.freepik.com/free-vector/pastel-watercolor-painted-background_23-2148959638.jpg"
         >
-          <v-row align="end" class="fill-height">
-            <v-col align-self="start" class="pa-0" cols="12">
-              <v-avatar class="profile ma-6" color="grey" size="164">
+          <div class="fill-height d-flex align-end py-3 px-6">
+            <div class="d-flex flex-column">
+              <v-avatar class="profile mb-3" color="teal" size="150">
                 <img
-            v-if="profile.students.image_url"
-            :src="profile.students.image_url"
-            :alt="profile.students.first_name"
-          />
-          <span v-else class="white--text text-h2"
-            >{{ profile.students.first_name[0]
-            }}{{ profile.students.last_name[0] }}</span
-          >
+                  v-if="profile.students.image_url"
+                  :src="profile.students.image_url"
+                  :alt="profile.students.first_name"
+                />
+                <span v-else class="white--text text-h2"
+                  >{{ profile.students.first_name[0]
+                  }}{{ profile.students.last_name[0] }}</span
+                >
               </v-avatar>
-            </v-col>
-            <v-col class="py-0">
-              <v-list-item color="rgba(0, 0, 0, .4)" dark>
-                <v-list-item-content>
-                  <v-list-item-title class="text-h6">
-                    {{ profile.students.first_name }}
-                    {{ profile.students.last_name }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    {{
-                      profile.students.university_courses.universities.name
-                    }}
-                    |
-                    {{
-                      profile.students.university_courses.courses.name
-                    }}</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-              </v-list-item>
-            </v-col>
-            <v-col class="py-0">
-              <v-list-item color="rgba(0, 0, 0, .4)" dark>
-                <v-list-item-content>
-                  <v-list-item-action v-if="auth.student.id == profile.students.id">
-                    <div>
-                      <v-btn color="primary" >Edit</v-btn>
-                    </div>
-                  </v-list-item-action>
-                  <v-list-item-action v-else-if="profile.students.friends.includes(auth.student.id)">
-                    <div>
-                      <v-btn color="primary">Friends</v-btn>
-                    </div>
-                  </v-list-item-action>
-                  <v-list-item-action v-else-if="profile.students.friend_requests.includes(auth.student.id)">
-                    <div>
-                      <v-btn color="primary">Requested</v-btn>
-                      <v-btn color="secondary" class="ml-3" :loading="isCancelApiLoading" @click="cancelRequest()">Cancel</v-btn>
-                    </div>
-                  </v-list-item-action>
-                  <v-list-item-action v-else-if="profile.students.send_requests.includes(auth.student.id)">
-                    <div>
-                      <v-btn color="primary" :loading="isApiLoading" @click="acceptRequest()">Accept</v-btn>
-                    <v-btn color="secondary" :loading="isCancelApiLoading" @click="rejectRequest()" class="ml-3">Cancel</v-btn>
-                    </div>
-                  </v-list-item-action>
-                  <v-list-item-action v-else>
-                    <div>
-                      <v-btn color="primary" :loading="isApiLoading" @click="sendRequest()">Add Friend</v-btn>
-                    </div>
-                  </v-list-item-action>
-                </v-list-item-content>
-              </v-list-item>
-            </v-col>
-          </v-row>
+              <div class="teal--text text--darken-2">
+                <div class="text-h6">
+                  {{ profile.students.first_name }}
+                  {{ profile.students.last_name }}
+                </div>
+                <div>
+                  {{ profile.students.university_courses.universities.name }}
+                  |
+                  {{ profile.students.university_courses.courses.name }}
+                </div>
+              </div>
+            </div>
+
+            <v-spacer></v-spacer>
+            <div>
+              <div v-if="auth.student.id == profile.students.id">
+                <v-btn color="primary"
+                  ><v-icon>mdi-account-edit</v-icon> Edit</v-btn
+                >
+              </div>
+              <div
+                v-else-if="profile.students.friends.includes(auth.student.id)"
+              >
+                <v-chip color="primary">
+                  <v-icon>mdi-account-check</v-icon> Friends</v-chip
+                >
+              </div>
+              <div
+                v-else-if="
+                  profile.students.friend_requests.includes(auth.student.id)
+                "
+              >
+                <v-chip color="primary">
+                  <v-icon>mdi-check</v-icon> Requested</v-chip
+                >
+                <v-btn
+                  color="grey darken-3"
+                  small
+                  text
+                  class="ml-1"
+                  :loading="isCancelApiLoading"
+                  @click="cancelRequest()"
+                  >Cancel</v-btn
+                >
+              </div>
+              <div
+                v-else-if="
+                  profile.students.send_requests.includes(auth.student.id)
+                "
+              >
+                <v-btn
+                  color="primary"
+                  :loading="isApiLoading"
+                  @click="acceptRequest()"
+                >
+                  <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+                  Accept</v-btn
+                >
+                <v-btn
+                  color="grey darken-3"
+                  small
+                  text
+                  class="ml-1"
+                  :loading="isCancelApiLoading"
+                  @click="rejectRequest()"
+                  >Cancel</v-btn
+                >
+              </div>
+              <div v-else>
+                <v-btn
+                  color="primary"
+                  :loading="isApiLoading"
+                  @click="sendRequest()"
+                  >Add Friend</v-btn
+                >
+              </div>
+            </div>
+          </div>
         </v-img>
       </v-card>
       <div v-if="!isApiLoading">
@@ -133,7 +151,7 @@ export default {
   },
   methods: {
     sendRequest() {
-      this.isApiLoading = true
+      this.isApiLoading = true;
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/friend/send-request",
@@ -145,15 +163,15 @@ export default {
           }
         )
         .then(() => {
-          this.getProfile()
-          this.isApiLoading = false
+          this.getProfile();
+          this.isApiLoading = false;
         })
         .catch((error) => {
           console.log(error);
         });
     },
     rejectRequest() {
-      this.isCancelApiLoading = true
+      this.isCancelApiLoading = true;
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/friend/reject-request",
@@ -165,15 +183,15 @@ export default {
           }
         )
         .then(() => {
-          this.getProfile()
-          this.isCancelApiLoading = false
+          this.getProfile();
+          this.isCancelApiLoading = false;
         })
         .catch((error) => {
           console.log(error);
         });
     },
     cancelRequest() {
-      this.isCancelApiLoading = true
+      this.isCancelApiLoading = true;
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/friend/cancel-request",
@@ -185,15 +203,15 @@ export default {
           }
         )
         .then(() => {
-          this.getProfile()
-          this.isCancelApiLoading = false
+          this.getProfile();
+          this.isCancelApiLoading = false;
         })
         .catch((error) => {
           console.log(error);
         });
     },
     acceptRequest() {
-      this.isApiLoading = true
+      this.isApiLoading = true;
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/friend/accept-request",
@@ -205,8 +223,8 @@ export default {
           }
         )
         .then(() => {
-          this.getProfile()
-          this.isApiLoading = false
+          this.getProfile();
+          this.isApiLoading = false;
         })
         .catch((error) => {
           console.log(error);
