@@ -1,5 +1,5 @@
 <template>
-  <v-card class="py-2" outlined rounded="lg" max-width="600">
+  <v-card class="py-2" outlined rounded="lg" width="600">
     <v-list-item>
       <v-list-item-avatar @click="goAccount()" size="100" rounded="circle" color="grey">
         <v-img

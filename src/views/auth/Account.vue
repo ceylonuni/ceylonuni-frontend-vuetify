@@ -9,10 +9,10 @@
         align-center
       "
     >
-      <v-card>
+      <v-card width="100%" max-height="300">
         <v-img
           height="100%"
-          src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
+          src="https://img.freepik.com/free-vector/pastel-watercolor-painted-background_23-2148959638.jpg"
         >
           <v-row align="end" class="fill-height">
             <v-col align-self="start" class="pa-0" cols="12">
