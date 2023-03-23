@@ -1,5 +1,6 @@
 <template>
-  <v-row>
+  <div>
+    <v-row v-if="data&&data.id">
     <v-col cols="8" class="flex-grow-1 flex-shrink-0">
       <v-card class="mx-auto" max-width="600" flat outlined>
         <ImagePost :data="data.image_url" v-if="data.image_url" />
@@ -79,7 +80,7 @@
                   <v-list-item-title>Edit</v-list-item-title>
                 </v-list-item>
                 <v-list-item >
-                  <v-list-item-title class="red--text">Delete</v-list-item-title>
+                  <v-list-item-title  @click="deletePost()" class="red--text">Delete</v-list-item-title>
                 </v-list-item>
                 <v-list-item >
                   <v-list-item-title @click="createReport()" class="red--text">Report</v-list-item-title>
@@ -111,7 +112,11 @@
       </div>
     </v-col>
     <ReportDialog v-if="isCreateReport" model="post" :model_id="data.id" :data="data" :callbackClose="closeCreateReport" />
+    <DeleteDialog v-if="isDeletePost" type="post" :id="data.id" :url="`${this.$api.servers.socializing}/post/delete`" :callbackClose="closeDeletePost" />
   </v-row>
+  <div v-else>Post not available.</div>
+  </div>
+ 
 </template>
 
 <script>
@@ -146,6 +151,7 @@ export default {
       isApiLoading: false,
       data: {},
       isCreateReport: false,
+      isDeletePost: false,
     };
   },
   computed: mapState({
@@ -157,6 +163,15 @@ export default {
   methods: {
     createReport() {
       this.isCreateReport = true;
+    },
+    deletePost() {
+      this.isDeletePost = true;
+    },
+    closeDeletePost() {
+      this.data = {}
+      this.getPost();
+      this.isDeletePost = false;
+      
     },
     closeCreateReport() {
       this.isCreateReport = false;

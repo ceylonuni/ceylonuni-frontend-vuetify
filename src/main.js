@@ -17,8 +17,9 @@ var api = {
 };
 Vue.prototype.$api = api;
 Vue.prototype.$_ = _;
-Vue.component("Error", () => import(/* webpackChunkName: "component-error" */ "@/components/Error.vue"));
-Vue.component("ReportDialog", () => import(/* webpackChunkName: "component-report-dialog" */ "@/components/Report/ReportDialog.vue"));
+Vue.component("Error", () => import(/* webpackChunkName: "component-error" */ "@/components/common/Error.vue"));
+Vue.component("DeleteDialog", () => import(/* webpackChunkName: "component-delete-dialog" */ "@/components/common/DeleteDialog.vue"));
+Vue.component("ReportDialog", () => import(/* webpackChunkName: "component-report-dialog" */ "@/components/common/ReportDialog.vue"));
 new Vue({
   router,
   store,
