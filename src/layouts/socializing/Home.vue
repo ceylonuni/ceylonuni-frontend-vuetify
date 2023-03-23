@@ -41,16 +41,37 @@
         <v-icon small color="grey darken-1"> mdi-bookshelf </v-icon>
         Study area
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
+      <v-menu bottom origin="center center" transition="scale-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon large color="grey" class="mx-1" v-bind="attrs" v-on="on">
+            <v-badge color="red" :content="total" :value="total" overlap>
+              <v-icon>mdi-bell</v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item :to="{ name: 'SocializingPeople', query:{key:'requests'} }">
+            <v-list-item-title
+              >You have {{ data.friend_requests }} friends
+              requests.</v-list-item-title
+            >
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item :to="{ name: 'YourCollboratedEvent' }">
+            <v-list-item-title
+              >You have {{ data.event_collaborators }} event collaboration
+              requests.</v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-menu bottom origin="center center" transition="scale-transition">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
             large
             color="grey"
-            @click="share()"
             class="mx-1"
             v-bind="attrs"
             v-on="on"
@@ -61,10 +82,13 @@
 
         <v-list>
           <v-list-item>
-            <v-list-item-title>{{ auth.student.first_name }} {{ auth.student.last_name }}</v-list-item-title>
+            <v-list-item-title
+              >{{ auth.student.first_name }}
+              {{ auth.student.last_name }}</v-list-item-title
+            >
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item :to="{name:'AuthLogout'}">
+          <v-list-item :to="{ name: 'AuthLogout' }">
             <v-list-item-title class="red--text">Logout</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -141,6 +165,7 @@
 </template>
 
 <script>
+const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
   components: {
@@ -153,6 +178,8 @@ export default {
     auth: (state) => state.auth.data,
   }),
   data: () => ({
+    data: {},
+    total: 0,
     drawer: true,
     isCreatePost: false,
     items: [],
@@ -178,7 +205,26 @@ export default {
       },
     ];
   },
+  mounted() {
+    this.getNotification();
+  },
   methods: {
+    getNotification() {
+      axios
+        .get(`${this.$api.servers.auth}/notification/get`, {
+          headers: {
+            Authorization: "Bearer " + this.auth.token,
+          },
+        })
+        .then((response) => {
+          this.data = response.data;
+          this.total =
+            this.data.friend_requests + this.data.event_collaborators;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     createPost() {
       this.isCreatePost = true;
     },
