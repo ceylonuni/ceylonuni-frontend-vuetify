@@ -82,7 +82,7 @@
                   <v-list-item-title class="red--text">Delete</v-list-item-title>
                 </v-list-item>
                 <v-list-item >
-                  <v-list-item-title class="red--text">Report</v-list-item-title>
+                  <v-list-item-title @click="createReport()" class="red--text">Report</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -110,6 +110,7 @@
         </div>
       </div>
     </v-col>
+    <ReportDialog v-if="isCreateReport" model="post" :model_id="data.id" :data="data" :callbackClose="closeCreateReport" />
   </v-row>
 </template>
 
@@ -144,6 +145,7 @@ export default {
       liked: false,
       isApiLoading: false,
       data: {},
+      isCreateReport: false,
     };
   },
   computed: mapState({
@@ -153,6 +155,12 @@ export default {
     this.getPost();
   },
   methods: {
+    createReport() {
+      this.isCreateReport = true;
+    },
+    closeCreateReport() {
+      this.isCreateReport = false;
+    },
     checkStudent() {
       if (
         this.event.event_collaborators.find(

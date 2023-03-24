@@ -34,9 +34,33 @@
         <v-icon small color="grey darken-1"> mdi-bookshelf </v-icon>
         Study area
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
+      <v-menu bottom origin="center center" transition="scale-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon large color="grey" class="mx-1" v-bind="attrs" v-on="on">
+            <v-badge color="red" :content="total" :value="total" overlap>
+              <v-icon>mdi-bell</v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            :to="{ name: 'SocializingPeople', query: { key: 'requests' } }"
+          >
+            <v-list-item-title
+              >You have {{ data.friend_requests }} friends
+              requests.</v-list-item-title
+            >
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item :to="{ name: 'YourCollboratedEvent' }">
+            <v-list-item-title
+              >You have {{ data.event_collaborators }} event collaboration
+              requests.</v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-menu bottom origin="center center" transition="scale-transition">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -54,10 +78,13 @@
 
         <v-list>
           <v-list-item>
-            <v-list-item-title>{{ auth.student.first_name }} {{ auth.student.last_name }}</v-list-item-title>
+            <v-list-item-title
+              >{{ auth.student.first_name }}
+              {{ auth.student.last_name }}</v-list-item-title
+            >
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item :to="{name:'AuthLogout'}">
+          <v-list-item :to="{ name: 'AuthLogout' }">
             <v-list-item-title class="red--text">Logout</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -97,7 +124,7 @@
             <v-icon>mdi-lightning-bolt</v-icon>
           </v-list-item-icon>
           <v-list-item-content v-if="!mini">
-            <v-btn small color="primary" :to="{name:'NewEvent'}" dark
+            <v-btn small color="primary" :to="{ name: 'NewEvent' }" dark
               ><v-icon left> mdi-lightning-bolt </v-icon> Create Event
             </v-btn>
           </v-list-item-content>
@@ -135,6 +162,7 @@
 
 <script>
 import { mapState } from "vuex";
+const axios = require("axios").default;
 export default {
   components: {
     DialogCreatePost: () =>
@@ -146,33 +174,66 @@ export default {
     auth: (state) => state.auth.data,
   }),
   data: () => ({
+    data: {},
+    total: 0,
     drawer: true,
     isCreatePost: false,
-    items: [
-     
-    ],
+    items: [],
     mini: false,
     searchKey: "",
   }),
-  created(){
-    this.items =  [
-    { title: "All Events", icon: "mdi-account-multiple",route:{name:'EventHome'}},
-      { title: "Your Events", icon: "mdi-home",route:{name:'YourEvent'} },
-      { title: "Interested Events", icon: "mdi-account",route:{name:'YourInterestedEvent'}},
-      { title: "Collborated Events", icon: "mdi-account",route:{name:'YourCollboratedEvent'}},
-     ]
+  created() {
+    this.items = [
+      {
+        title: "All Events",
+        icon: "mdi-account-multiple",
+        route: { name: "EventHome" },
+      },
+      { title: "Your Events", icon: "mdi-home", route: { name: "YourEvent" } },
+      {
+        title: "Interested Events",
+        icon: "mdi-account",
+        route: { name: "YourInterestedEvent" },
+      },
+      {
+        title: "Collborated Events",
+        icon: "mdi-account",
+        route: { name: "YourCollboratedEvent" },
+      },
+    ];
+  },
+  mounted() {
+    this.getNotification();
   },
   methods: {
+    getNotification() {
+      axios
+        .get(`${this.$api.servers.auth}/notification/get`, {
+          headers: {
+            Authorization: "Bearer " + this.auth.token,
+          },
+        })
+        .then((response) => {
+          this.data = response.data;
+          this.total =
+            this.data.friend_requests + this.data.event_collaborators;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     createPost() {
       this.isCreatePost = true;
-   
     },
     closeCreatePost() {
       this.isCreatePost = false;
     },
-    search(){
-      this.$router.push({ name: 'SearchResults', query: { q: this.searchKey }})
-      console.log(this.searchKey)
+    search() {
+      this.$router.push({
+        name: "SearchResults",
+        query: { q: this.searchKey },
+      });
+      console.log(this.searchKey);
     },
   },
 };
