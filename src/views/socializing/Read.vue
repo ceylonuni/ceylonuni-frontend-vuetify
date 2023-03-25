@@ -65,24 +65,21 @@
             <v-btn icon large color="grey" @click="comment()" class="mx-1">
               <v-icon>mdi-comment-outline</v-icon> {{ data.comments.length }}
             </v-btn>
-            <v-btn icon large color="grey" @click="share()" class="mx-1">
-              <v-icon>mdi-share-outline</v-icon> 5
-            </v-btn>
+            <ShareButton :url="`${$app_url}/posts/${data.key}`"/>
             <v-menu bottom origin="center center" transition="scale-transition">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn icon large color="grey" @click="share()" class="mx-1" v-bind="attrs" v-on="on">
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
               </template>
-
               <v-list>
-                <v-list-item >
+                <v-list-item v-if="auth.student.id == data.student_id">
                   <v-list-item-title>Edit</v-list-item-title>
                 </v-list-item>
-                <v-list-item >
+                <v-list-item v-if="auth.student.id == data.student_id" >
                   <v-list-item-title  @click="deletePost()" class="red--text">Delete</v-list-item-title>
                 </v-list-item>
-                <v-list-item >
+                <v-list-item v-if="auth.student.id != data.student_id" >
                   <v-list-item-title @click="createReport()" class="red--text">Report</v-list-item-title>
                 </v-list-item>
               </v-list>

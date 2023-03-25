@@ -60,9 +60,7 @@
         <v-btn icon large color="grey" @click="comment()" class="mx-1">
           <v-icon>mdi-comment-outline</v-icon> {{ data.comments.length }}
         </v-btn>
-        <v-btn icon large color="grey" @click="share()" class="mx-1">
-          <v-icon>mdi-share-outline</v-icon> 5
-        </v-btn>
+        <ShareButton :url="`${$app_url}/posts/${data.key}`"/>
       </div>
     </v-card-subtitle>
 
