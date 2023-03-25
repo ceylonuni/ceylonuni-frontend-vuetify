@@ -98,7 +98,7 @@ export default {
     submit() {
       axios
         .post(
-          "http://localhost:3000/api/socializing/post/add",
+          "http://localhost:3002/api/socializing/v1/post/add",
           {
             text: this.text,
             image_url:this.image

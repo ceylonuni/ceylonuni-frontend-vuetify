@@ -1,6 +1,11 @@
 <template>
   <v-card elevation="0" width="350" class="mx-auto" color="transparent">
     <Welcome />
+    <Error
+      v-if="isError"
+      :error="error"
+      :callbackReset="() => (isError = false)"
+    ></Error>
     <v-divider></v-divider>
     <v-card class="mx-auto" rounded="lg" outlined color="transparent">
       <v-card-title class="font-weight-regular justify-space-between teal--text pb-0">
@@ -75,6 +80,7 @@
           :disabled="step === 4 || step === 5"
           color="primary"
           depressed
+          :loading="isApiLoading"
         >
           {{ step == 3 ? "Confirm" : "Next" }}
         </v-btn>
@@ -95,6 +101,9 @@ export default {
     email: null,
     password: null,
     step: 1,
+    isApiLoading: false,
+    isError: false,
+    error:null
   }),
 
   computed: {
@@ -116,50 +125,66 @@ export default {
   methods: {
     verifyEmail() {
       if (this.step == 1) {
+        this.isApiLoading = true
         // verify email
         axios
-          .post("http://localhost:3000/api/auth/email/verify", {
+          .post(`${this.$api.servers.auth}/email/verify`, {
             email: this.email,
           })
           .then((response) => {
             console.log(response);
+            this.isApiLoading = false
             if (response.data.existing) {
               this.step = 2;
-            } else if (response.data.vaild) {
+            } else if (response.data.valid) {
               this.step = 3;
             } else {
               this.step = 4;
             }
           })
           .catch((error) => {
+            this.isApiLoading = false
+            this.isError = true
+            this.error = error.response.data.message
             console.log(error);
+        
           });
       } else if (this.step == 2) {
+        this.isApiLoading = true
         // login email password
         axios
-          .post("http://localhost:3000/api/auth/login", {
+          .post(`${this.$api.servers.auth}/login`, {
             email: this.email,
             password: this.password,
           })
           .then((response) => {
+            this.isApiLoading = false
             this.$store.commit("updateAuth",response.data)
             this.$router.push({name:'SocializingHome'})
             console.log(response);
           })
           .catch((error) => {
+            this.isApiLoading = false
+            this.isError = true
+            this.error = error.response.data.message
             console.log(error);
           });
       } else if (this.step == 3) {
+        this.isApiLoading = true
         // send verification email
         axios
-          .post("http://localhost:3000/api/auth/email/send", {
+          .post(`${this.$api.servers.auth}/email/send`, {
             email: this.email,
           })
           .then((response) => {
+            this.isApiLoading = false
             console.log(response);
             this.step = 5;
           })
           .catch((error) => {
+            this.isApiLoading = false
+            this.isError = true
+            this.error = error.response.data.message
             console.log(error);
           });
       }
