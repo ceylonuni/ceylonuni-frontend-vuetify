@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pa-3" v-for="(post,i) in posts" :key="i">
-    <Post :data="post" @getPosts="getPosts"/>
+    <Post :data="post" type="image" />
   </div>
   </div>
 </template>
@@ -12,9 +12,10 @@ export default {
   components: {
     Post: () =>
       import(
-        /* webpackChunkName: "component-socializing-post" */ "@/components/socializing/Post/PostFrame"
+        /* webpackChunkName: "component-socializing-post" */ "@/components/socializing/Post/AbstractPost"
       ),
   },
+  props: ["type", "data"],
   data() {
     return {
       posts: null,
@@ -27,7 +28,7 @@ export default {
     getPosts(){
       axios
         .get(
-          "http://localhost:3002/api/socializing/v1/post/collapse/all",
+          "http://localhost:3000/api/socializing/post/collapse/all",
           {
             headers: {
               Authorization: "Bearer " + this.auth.token,
