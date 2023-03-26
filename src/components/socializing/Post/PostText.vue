@@ -1,5 +1,6 @@
 <template>
   <v-card
+  width="600"
     min-height="300"
     :color="colors[Math.floor(Math.random() * 10)]"
     class="

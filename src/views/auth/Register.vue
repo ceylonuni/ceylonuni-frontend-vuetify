@@ -9,8 +9,12 @@
         style="background-color: transparent"
       >
         <Welcome direction="horizontal" />
-        <v-divider class="mx-3"></v-divider>
-        <div>Hello {{ email }}</div>
+        <v-divider class="mx-3 mb-2"></v-divider>
+        <p
+          class="font-weight-regular teal--text mx-5 mt-5 teal lighten-5 px-3 py-1 rounded-xl text-center"
+        >
+          Hello, {{ email }}
+        </p>
         <p class="font-weight-regular text-h5 teal--text mx-5 mt-5">
           Register to Ceylonuni
         </p>
@@ -140,7 +144,7 @@
           <v-card elevation="0" class="mb-3" color="transparent">
             <v-checkbox
               v-model="checkbox"
-              label="I Agree to Privacy Policy"
+              label="I Agree"
             ></v-checkbox>
           </v-card>
           <v-btn color="primary" @click="register()"> Confirm </v-btn>
@@ -230,20 +234,25 @@ export default {
     register() {
       if (this.checkbox) {
         axios
-          .post("http://localhost:3000/api/auth/v1/register", {
-            email: this.email,
-            first_name:this.firstName,
-            last_name:this.lastName,
-            address:this.address,
-            password: this.password,
-            mobile:this.mobile,
-            university_course_id:this.course,
-          },{
-            headers: {
-            Authorization: "Bearer " + this.$route.query.token,
-          },
-          })
+          .post(
+            "http://localhost:3000/api/auth/v1/register",
+            {
+              email: this.email,
+              first_name: this.firstName,
+              last_name: this.lastName,
+              address: this.address,
+              password: this.password,
+              mobile: this.mobile,
+              university_course_id: this.course,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + this.$route.query.token,
+              },
+            }
+          )
           .then((response) => {
+            console.log(response)
             this.$store.commit("updateAuth", response.data);
             this.$router.push({ name: "SocializingHome" });
           })

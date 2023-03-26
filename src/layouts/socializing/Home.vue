@@ -187,6 +187,7 @@ export default {
     searchKey: "",
   }),
   created() {
+    console.log(this.auth)
     this.items = [
       { title: "Home", icon: "mdi-home", route: { name: "SocializingHome" } },
       {
