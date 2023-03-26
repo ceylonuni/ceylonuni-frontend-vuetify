@@ -157,7 +157,6 @@
     </v-row>
     <div>
       <v-row>
-        {{ selectedStudents }}
         <v-col>
           <div>
             <v-menu
