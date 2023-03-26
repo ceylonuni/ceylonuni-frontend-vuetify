@@ -1,8 +1,10 @@
 <template>
   <v-card class="mx-auto" max-width="600" flat outlined>
+    <div @click="viewPost(data)">
     <ImagePost :data="data.image_url" v-if="data.image_url" />
     <VideoPost :data="data.video_url" v-else-if="data.video_url" />
     <TextPost :data="data.text" v-else />
+  </div>
     <v-card-subtitle  class="pb-0 d-flex align-center justify-space-between">
       <div @click="goAccount(data)" class="d-flex align-center">
         <v-avatar color="teal">
@@ -40,9 +42,7 @@
         <v-btn icon large color="grey" @click="comment()" class="mx-1">
           <v-icon>mdi-comment-outline</v-icon> {{ data.comments.length }}
         </v-btn>
-        <v-btn icon large color="grey" @click="share()" class="mx-1">
-          <v-icon>mdi-share-outline</v-icon> 5
-        </v-btn>
+        <ShareButton :url="`${$app_url}/posts/${data.key}`"/>
       </div>
     </v-card-subtitle>
 
@@ -139,6 +139,9 @@ export default {
     },
     getPosts() {
       this.$emit("getPosts");
+    },
+    viewPost(data){
+      this.$router.push({name:'SocializingPostRead',params:{key:data.key}})
     },
   },
   mounted() {
