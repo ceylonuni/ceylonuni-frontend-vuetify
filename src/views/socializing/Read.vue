@@ -73,14 +73,14 @@
             </v-btn>
               </template>
               <v-list>
-                <v-list-item v-if="auth.student.id == data.student_id">
+                <v-list-item v-if="auth.student.id == data.student_id"  @click="editPost()" >
                   <v-list-item-title>Edit</v-list-item-title>
                 </v-list-item>
-                <v-list-item v-if="auth.student.id == data.student_id" >
-                  <v-list-item-title  @click="deletePost()" class="red--text">Delete</v-list-item-title>
+                <v-list-item v-if="auth.student.id == data.student_id" @click="deletePost()">
+                  <v-list-item-title class="red--text">Delete</v-list-item-title>
                 </v-list-item>
-                <v-list-item v-if="auth.student.id != data.student_id" >
-                  <v-list-item-title @click="createReport()" class="red--text">Report</v-list-item-title>
+                <v-list-item v-if="auth.student.id != data.student_id" @click="createReport()">
+                  <v-list-item-title  class="red--text">Report</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -110,6 +110,7 @@
     </v-col>
     <ReportDialog v-if="isCreateReport" model="post" :model_id="data.id" :data="data" :callbackClose="closeCreateReport" />
     <DeleteDialog v-if="isDeletePost" type="post" :id="data.id" :url="`${this.$api.servers.socializing}/post/delete`" :callbackClose="closeDeletePost" />
+    <DialogEditPost v-if="isEditPost" :text="data.text" :callbackClose="closeEditPost" />
   </v-row>
   <div v-else>Post not available.</div>
   </div>
@@ -121,6 +122,10 @@ const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
   components: {
+    DialogEditPost: () =>
+      import(
+        /* webpackChunkName: "component-socializing-edit-post" */ "@/components/common/EditPostDialog"
+      ),
     ImagePost: () =>
       import(
         /* webpackChunkName: "component-socializing-post-image" */ "@/components/socializing/Post/PostImage"
@@ -149,6 +154,7 @@ export default {
       data: {},
       isCreateReport: false,
       isDeletePost: false,
+      isEditPost: false,
     };
   },
   computed: mapState({
@@ -164,10 +170,18 @@ export default {
     deletePost() {
       this.isDeletePost = true;
     },
+    editPost() {
+      this.isEditPost = true;
+    },
     closeDeletePost() {
       this.data = {}
       this.getPost();
       this.isDeletePost = false;
+      
+    },
+    closeEditPost() {
+      this.getPost();
+      this.isEditPost = false;
       
     },
     closeCreateReport() {
