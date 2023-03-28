@@ -11,7 +11,7 @@ const loggedIn = function (to, from, next) {
 
 const routes = [
   {
-    path: "/",
+    path: "/socializing",
     component: () =>
       import(
         /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/socializing/Home"
@@ -104,9 +104,7 @@ const routes = [
         path: "new",
         name: "NewEvent",
         component: () =>
-          import(
-            /* webpackChunkName: "view-event-New" */ "@/views/event/New"
-          ),
+          import(/* webpackChunkName: "view-event-New" */ "@/views/event/New"),
       },
       {
         path: ":key",
@@ -150,6 +148,14 @@ const routes = [
           ),
       },
     ],
+  },
+  {
+    path: "/study",
+    component: () =>
+      import(
+        /* webpackChunkName: "layout-study-home" */ "@/layouts/study/Home"
+      ),
+    name: "StudyHome",
   },
 ];
 

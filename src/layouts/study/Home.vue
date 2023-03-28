@@ -26,12 +26,27 @@
         <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
-      <v-btn elevation="0" small text rounded class="text-capitalize" :to="{ name: 'EventHome' }" color="teal">
-        <v-icon small color="teal darken-1"> mdi-calendar-star </v-icon>
+      <v-btn
+        elevation="0"
+        small
+        text
+        rounded
+        :to="{ name: 'EventHome' }"
+        class="text-capitalize"
+      >
+        <v-icon small color="grey darken-1"> mdi-calendar-star </v-icon>
         events
       </v-btn>
-      <v-btn elevation="0" small text rounded class="text-capitalize" :to="{ name: 'StudyHome' }">
-        <v-icon small color="grey darken-1"> mdi-bookshelf </v-icon>
+      <v-btn
+        elevation="0"
+        small
+        text
+        rounded
+        class="text-capitalize"
+        :to="{ name: 'StudyHome' }"
+        color="teal"
+      >
+        <v-icon small color="teal darken-1"> mdi-bookshelf </v-icon>
         Study area
       </v-btn>
       <v-menu bottom origin="center center" transition="scale-transition">
@@ -63,15 +78,7 @@
       </v-menu>
       <v-menu bottom origin="center center" transition="scale-transition">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            large
-            color="grey"
-            @click="share()"
-            class="mx-1"
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn icon large color="grey" class="mx-1" v-bind="attrs" v-on="on">
             <v-icon>mdi-account-circle</v-icon>
           </v-btn>
         </template>
@@ -119,16 +126,16 @@
       <v-divider />
 
       <v-list dense>
-        <v-list-item link>
+        <!-- <v-list-item link>
           <v-list-item-icon v-if="mini">
             <v-icon>mdi-lightning-bolt</v-icon>
           </v-list-item-icon>
           <v-list-item-content v-if="!mini">
-            <v-btn small color="primary" :to="{ name: 'NewEvent' }" dark
-              ><v-icon left> mdi-lightning-bolt </v-icon> Create Event
+            <v-btn small color="primary" @click="createPost" dark
+              ><v-icon left> mdi-lightning-bolt </v-icon> Create Post
             </v-btn>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
         <v-list-item
           v-for="item in items"
           :key="item.title"
@@ -146,9 +153,19 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="d-flex" style="background-color: rgb(245, 250, 250)">
+    <v-main class="d-flex align-center" style="background-color: rgb(245, 250, 250)">
       <v-container fluid>
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
+        <div class="text-center">
+          <div class="d-flex flex-column align-center teal--text text-h5">
+            <v-icon x-large color="teal darken-1"> mdi-bookshelf </v-icon>
+            Study area
+          </div>
+          <div class="grey--text">
+            Study area is currently under construction and will be launching soon.
+          </div>
+          
+        </div>
       </v-container>
     </v-main>
 
@@ -161,8 +178,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 const axios = require("axios").default;
+import { mapState } from "vuex";
 export default {
   components: {
     DialogCreatePost: () =>
@@ -183,24 +200,8 @@ export default {
     searchKey: "",
   }),
   created() {
-    this.items = [
-      {
-        title: "All Events",
-        icon: "mdi-account-multiple",
-        route: { name: "EventHome" },
-      },
-      { title: "Your Events", icon: "mdi-home", route: { name: "YourEvent" } },
-      {
-        title: "Interested Events",
-        icon: "mdi-account",
-        route: { name: "YourInterestedEvent" },
-      },
-      {
-        title: "Collborated Events",
-        icon: "mdi-account",
-        route: { name: "YourCollboratedEvent" },
-      },
-    ];
+    console.log(this.auth);
+    this.items = [];
   },
   mounted() {
     this.getNotification();

@@ -22,8 +22,9 @@
         rounded
         :to="{ name: 'SocializingHome' }"
         class="text-capitalize"
+        color="teal"
       >
-        <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
+        <v-icon small color="teal darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
       <v-btn
@@ -37,7 +38,7 @@
         <v-icon small color="grey darken-1"> mdi-calendar-star </v-icon>
         events
       </v-btn>
-      <v-btn elevation="0" small text rounded class="text-capitalize">
+      <v-btn elevation="0" small text rounded class="text-capitalize" :to="{ name: 'StudyHome' }">
         <v-icon small color="grey darken-1"> mdi-bookshelf </v-icon>
         Study area
       </v-btn>
@@ -93,12 +94,12 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>mdi-cog</v-icon>
       </v-btn>
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"

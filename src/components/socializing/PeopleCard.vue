@@ -1,7 +1,12 @@
 <template>
   <v-card class="py-2" outlined rounded="lg" width="600">
     <v-list-item>
-      <v-list-item-avatar @click="goAccount()" size="100" rounded="circle" color="grey">
+      <v-list-item-avatar
+        @click="goAccount()"
+        size="100"
+        rounded="circle"
+        color="grey"
+      >
         <v-img
           v-if="data.image_url"
           class="ml-auto mr-auto"
@@ -41,13 +46,13 @@
         <v-chip
           v-else-if="data.friend_requests.includes(auth.student.id)"
           small
-          class="mt-3 ml-1 text-center"
-          style="max-width: 100px"
+          class="mt-3 ml-1 text-center px-3"
+          style="max-width: 120px"
         >
           <v-icon small class="mr-3">mdi-account-check</v-icon>Requested
         </v-chip>
         <v-btn
-        v-else-if="data.send_requests.includes(auth.student.id)"
+          v-else-if="data.send_requests.includes(auth.student.id)"
           outlined
           rounded
           text
@@ -88,14 +93,17 @@ export default {
   data() {
     return {
       isApiLoading: false,
-    }
+    };
   },
   methods: {
-    goAccount(){
-     this.$router.push({name:'AuthMyAccount',params:{username:this.data.accounts[0].username}})
+    goAccount() {
+      this.$router.push({
+        name: "AuthMyAccount",
+        params: { username: this.data.accounts[0].username },
+      });
     },
     sendRequest() {
-      this.isApiLoading = true
+      this.isApiLoading = true;
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/friend/send-request",
@@ -108,14 +116,14 @@ export default {
         )
         .then(() => {
           this.$emit("getData");
-          this.isApiLoading = false
+          this.isApiLoading = false;
         })
         .catch((error) => {
           console.log(error);
         });
     },
     acceptRequest() {
-      this.isApiLoading = true
+      this.isApiLoading = true;
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/friend/accept-request",
@@ -128,7 +136,7 @@ export default {
         )
         .then(() => {
           this.$emit("getData");
-          this.isApiLoading = false
+          this.isApiLoading = false;
         })
         .catch((error) => {
           console.log(error);
