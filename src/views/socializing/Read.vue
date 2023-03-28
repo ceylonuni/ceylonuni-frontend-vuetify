@@ -129,11 +129,11 @@
           </div>
         </v-card>
       </v-col>
-      <v-col class="flex-grow-0 flex-shrink-0">
+      <v-col class="flex-grow-0 flex-shrink-0" >
         <div style="width: 300px">
           <div class="d-flex" style="position: fixed; right: 0">
             <v-divider vertical class="mx-3" />
-            <Friends :items="data.likes" title="likes" />
+            <Friends :items="data.likes" title="Likes" />
           </div>
         </div>
       </v-col>

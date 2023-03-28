@@ -6,8 +6,9 @@
       >
         <v-card width="100%">
           <v-img
-            width="100%"
-            max-height="300px"
+          width="100%"
+          gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.4) , rgba(0,0,0,.6)"
+          max-height="300px"
             :src="
               previewImage
                 ? previewImage
