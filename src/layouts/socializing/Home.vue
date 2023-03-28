@@ -22,8 +22,9 @@
         rounded
         :to="{ name: 'SocializingHome' }"
         class="text-capitalize"
+        color="teal"
       >
-        <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
+        <v-icon small color="teal darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
       <v-btn
@@ -37,7 +38,7 @@
         <v-icon small color="grey darken-1"> mdi-calendar-star </v-icon>
         events
       </v-btn>
-      <v-btn elevation="0" small text rounded class="text-capitalize">
+      <v-btn elevation="0" small text rounded class="text-capitalize" :to="{ name: 'StudyHome' }">
         <v-icon small color="grey darken-1"> mdi-bookshelf </v-icon>
         Study area
       </v-btn>
@@ -93,12 +94,12 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>mdi-cog</v-icon>
       </v-btn>
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
@@ -123,16 +124,6 @@
       <v-divider />
 
       <v-list dense>
-        <v-list-item link>
-          <v-list-item-icon v-if="mini">
-            <v-icon>mdi-lightning-bolt</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content v-if="!mini">
-            <v-btn small color="primary" @click="createPost" dark
-              ><v-icon left> mdi-lightning-bolt </v-icon> Create Post
-            </v-btn>
-          </v-list-item-content>
-        </v-list-item>
         <v-list-item
           v-for="item in items"
           :key="item.title"
@@ -159,8 +150,6 @@
     <v-footer app>
       <!-- -->
     </v-footer>
-    <!-- dialogs -->
-    <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
   </v-app>
 </template>
 
@@ -169,10 +158,7 @@ const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
   components: {
-    DialogCreatePost: () =>
-      import(
-        /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/NewPostDialog"
-      ),
+    //
   },
   computed: mapState({
     auth: (state) => state.auth.data,
@@ -224,12 +210,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
-    createPost() {
-      this.isCreatePost = true;
-    },
-    closeCreatePost() {
-      this.isCreatePost = false;
     },
     search() {
       this.$router.push({

@@ -98,15 +98,58 @@
                 >
               </div>
             </div>
+            <div v-if="auth.student.id != profile.students.id">
+                <v-menu
+                  bottom
+                  origin="center center"
+                  transition="scale-transition"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      icon
+                      large
+                      color="black"
+                      class="mx-1"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-item @click="createReport()">
+                      <v-list-item-title class="red--text"
+                        >Report</v-list-item-title
+                      >
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
           </div>
         </v-img>
       </v-card>
-      <div v-if="!isApiLoading">
+      <div class="d-flex justify-center py-3">
+      <v-btn class="mx-auto" width="600"  color="teal" dark x-large @click="createPost">
+        <v-icon>mdi-lightning-bolt</v-icon>
+        Create Post
+      </v-btn>
+    </div>
+    <v-divider class="mx-auto my-3" width="600"></v-divider>
+      <div>
         <div class="pa-3" v-for="(post, i) in profile.students.posts" :key="i">
-          <Post :data="post" @getPosts="getPosts" />
+          <Post :data="post" @getPosts="getProfile" />
         </div>
       </div>
     </v-col>
+      <!-- dialogs -->
+      <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
+    <ReportDialog
+      v-if="isCreateReport"
+      model="student"
+      :model_id="profile.students.id"
+      :data="profile.students"
+      :callbackClose="closeCreateReport"
+    />
   </v-row>
 </template>
 
@@ -115,6 +158,10 @@ const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
   components: {
+    DialogCreatePost: () =>
+      import(
+        /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/NewPostDialog"
+      ),
     Post: () =>
       import(
         /* webpackChunkName: "component-socializing-post" */ "@/components/socializing/Post/PostFrame"
@@ -122,8 +169,10 @@ export default {
   },
   data() {
     return {
+      isCreatePost: false,
       isApiLoading: false,
       isCancelApiLoading: false,
+      isCreateReport: false,
       filters: [
         { title: "All", icon: "mdi-ballot", key: "all" },
         { title: "Friends", icon: "mdi-account-multiple", key: "friends" },
@@ -150,6 +199,19 @@ export default {
     this.getProfile();
   },
   methods: {
+     createPost() {
+      this.isCreatePost = true;
+    },
+    closeCreatePost() {
+      this.isCreatePost = false;
+      this.getProfile()
+    },
+    createReport() {
+      this.isCreateReport = true;
+    },
+    closeCreateReport() {
+      this.isCreateReport = false;
+    },
     sendRequest() {
       this.isApiLoading = true;
       axios

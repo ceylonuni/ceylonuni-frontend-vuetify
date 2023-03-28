@@ -10,9 +10,11 @@
           align-center
         "
       >
-        <v-card>
+        <v-card width="100%">
           <v-img
-            height="100%"
+          width="100%"
+          gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.4) , rgba(0,0,0,.6)"
+          max-height="300px"
             :src="
               previewImage
                 ? previewImage
@@ -44,6 +46,7 @@
       </v-col>
     </v-row>
 
+    <div class="pa-9">
     <v-row>
       <v-col>
         <div>
@@ -65,6 +68,7 @@
             filled
             label="Event Name"
             v-model="name"
+            prepend-icon="mdi-rename"
           ></v-text-field>
         </div>
       </v-col>
@@ -75,6 +79,7 @@
             filled
             label="Venue"
             v-model="venue"
+            prepend-icon="mdi-map-marker"
           ></v-text-field>
         </div>
       </v-col>
@@ -157,7 +162,6 @@
     </v-row>
     <div>
       <v-row>
-        {{ selectedStudents }}
         <v-col>
           <div>
             <v-menu
@@ -172,7 +176,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="endDate"
-                  label="Start Date"
+                  label="End Date"
                   prepend-icon="mdi-calendar"
                   readonly
                   rounded
@@ -255,6 +259,7 @@
       item-value="id"
       attach
       label="Add colaborators"
+      prepend-icon="mdi-account-group"
       multiple
       rounded
       filled
@@ -296,6 +301,7 @@
     <div class="text-right">
       <v-btn class="mt-3" color="primary" :loading="isApiLoading" @click="submit()">Create Event</v-btn>
     </div>
+  </div>
   </div>
 </template>
 

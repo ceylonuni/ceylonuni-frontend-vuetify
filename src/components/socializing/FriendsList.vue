@@ -14,33 +14,29 @@
       <v-list-item
         :to="{
           name: 'AuthMyAccount',
-          params: { username: item.students.accounts[0].username },
+          params: { username: item.accounts[0].username },
         }"
       >
         <v-list-item-avatar>
           <v-avatar color="teal">
             <img
-              v-if="item.students.image_url"
-              :src="item.students.image_url"
-              :alt="item.students.first_name"
+              v-if="item.image_url"
+              :src="item.image_url"
+              :alt="item.first_name"
             />
             <span v-else class="white--text text-h6"
-              >{{ item.students.first_name[0]
-              }}{{ item.students.last_name[0] }}</span
+              >{{ item.first_name[0] }}{{ item.last_name[0] }}</span
             >
           </v-avatar>
         </v-list-item-avatar>
 
         <v-list-item-content>
           <v-list-item-title
-            >{{ item.students.first_name }}
-            {{ item.students.last_name }}</v-list-item-title
+            >{{ item.first_name }} {{ item.last_name }}</v-list-item-title
           >
           <v-list-item-subtitle>
-            {{ item.students.university_courses.universities.name }} |
-            {{
-              item.students.university_courses.courses.name
-            }}</v-list-item-subtitle
+            {{ item.university_courses.universities.name }} |
+            {{ item.university_courses.courses.name }}</v-list-item-subtitle
           >
         </v-list-item-content>
       </v-list-item>
