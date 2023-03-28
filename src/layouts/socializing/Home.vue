@@ -124,16 +124,6 @@
       <v-divider />
 
       <v-list dense>
-        <v-list-item link>
-          <v-list-item-icon v-if="mini">
-            <v-icon>mdi-lightning-bolt</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content v-if="!mini">
-            <v-btn small color="primary" @click="createPost" dark
-              ><v-icon left> mdi-lightning-bolt </v-icon> Create Post
-            </v-btn>
-          </v-list-item-content>
-        </v-list-item>
         <v-list-item
           v-for="item in items"
           :key="item.title"
@@ -160,8 +150,6 @@
     <v-footer app>
       <!-- -->
     </v-footer>
-    <!-- dialogs -->
-    <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
   </v-app>
 </template>
 
@@ -170,10 +158,7 @@ const axios = require("axios").default;
 import { mapState } from "vuex";
 export default {
   components: {
-    DialogCreatePost: () =>
-      import(
-        /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/NewPostDialog"
-      ),
+    //
   },
   computed: mapState({
     auth: (state) => state.auth.data,
@@ -225,12 +210,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
-    createPost() {
-      this.isCreatePost = true;
-    },
-    closeCreatePost() {
-      this.isCreatePost = false;
     },
     search() {
       this.$router.push({

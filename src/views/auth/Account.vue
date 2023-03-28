@@ -7,6 +7,7 @@
         <v-img
           height="100%"
           src="https://img.freepik.com/free-vector/pastel-watercolor-painted-background_23-2148959638.jpg"
+          gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         >
           <div class="fill-height d-flex align-end py-3 px-6">
             <div class="d-flex flex-column">
