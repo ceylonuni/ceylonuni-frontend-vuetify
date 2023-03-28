@@ -41,8 +41,8 @@
         <v-chip
           v-else-if="data.friend_requests.includes(auth.student.id)"
           small
-          class="mt-3 ml-1 text-center"
-          style="max-width: 100px"
+          class="mt-3 ml-1 text-center px-3"
+          style="max-width: 120px"
         >
           <v-icon small class="mr-3">mdi-account-check</v-icon>Requested
         </v-chip>
