@@ -60,11 +60,11 @@ export default {
           icon: "mdi-account-multiple-plus",
           key: "requests",
         },
-        {
-          title: "Suggestions",
-          icon: "mdi-account-multiple-check",
-          key: "suggestions",
-        },
+        // {
+        //   title: "Suggestions",
+        //   icon: "mdi-account-multiple-check",
+        //   key: "suggestions",
+        // },
       ],
       selctedKey: null,
       results: [],
