@@ -65,7 +65,11 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          this.closeDialog();
+          if(this.type == "post"){
+              this.$router.go(-1);
+          } else {
+             this.closeDialog();
+          }
         })
         .catch((error) => {
           console.log(error);

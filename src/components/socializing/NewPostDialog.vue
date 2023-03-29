@@ -42,7 +42,7 @@
             Close
           </v-btn>
 
-          <v-btn color="teal darken-1" text @click="submit"> Submit </v-btn>
+          <v-btn  :loading="isLoading" color="teal darken-1" text @click="submit"> Submit </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -70,6 +70,7 @@ export default {
       text: null,
       token: null,
       image:null,
+      isLoading: false
     };
   },
 
@@ -96,6 +97,7 @@ export default {
       }
     },
     submit() {
+      this.isLoading = true
       axios
         .post(
           "http://localhost:3002/api/socializing/v1/post/add",
@@ -111,9 +113,11 @@ export default {
         )
         .then((response) => {
           console.log(response);
+          this.isLoading = false
           this.closeDialog();
         })
         .catch((error) => {
+          this.isLoading = false
           console.log(error);
         });
     },

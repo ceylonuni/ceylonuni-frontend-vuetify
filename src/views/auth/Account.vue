@@ -129,7 +129,7 @@
         </v-img>
       </v-card>
       <div class="d-flex justify-center py-3">
-      <v-btn class="mx-auto" width="600"  color="teal" dark x-large @click="createPost">
+      <v-btn v-if="auth.student.id == profile.students.id" class="mx-auto" width="600"  color="teal" dark x-large @click="createPost">
         <v-icon>mdi-lightning-bolt</v-icon>
         Create Post
       </v-btn>
@@ -138,6 +138,9 @@
       <div>
         <div class="pa-3" v-for="(post, i) in profile.students.posts" :key="i">
           <Post :data="post" @getPosts="getProfile" />
+        </div>
+        <div class="pa-3" v-if="profile.students && profile.students.posts && profile.students.posts.length == 0">
+          <div class="text-center">No Posts</div>
         </div>
       </div>
     </v-col>

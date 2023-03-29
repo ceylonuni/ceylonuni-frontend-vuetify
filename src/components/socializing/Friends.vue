@@ -6,7 +6,7 @@
     style="overflow-y: auto; max-height: calc(100vh - 100px)"
   >
     <v-subheader class="teal--text text-h6">
-      <v-badge :content="items.length" inline>
+      <v-badge :content="items ? items.length:0" inline>
         {{ title }}
       </v-badge>
     </v-subheader>
