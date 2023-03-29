@@ -28,18 +28,43 @@
                 </v-list-item-content>
               </v-list-item>
             </v-col>
-            <!-- <v-col class="py-0">
-              <v-list-item color="rgba(0, 0, 0, .4)" dark>
-                <v-list-item-content>
-                  <v-list-item-action>
-                    <v-spacer></v-spacer>
-                    <div>
-                      <v-btn color="primary">Register</v-btn>
-                    </div>
-                  </v-list-item-action>
-                </v-list-item-content>
-              </v-list-item>
-            </v-col> -->
+            <v-col class="py-0">
+              <div class="d-flex">
+                <v-spacer></v-spacer>
+                <div v-if="auth.student.id == event.student_id" class="pr-2">
+                  <v-btn @click="editEvent()" color="primary"
+                    ><v-icon>mdi-calendar-edit</v-icon> Edit</v-btn
+                  >
+                </div>
+                <div v-if="auth.student.id != event.student_id">
+                  <v-menu
+                    bottom
+                    origin="center center"
+                    transition="scale-transition"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        icon
+                        large
+                        color="white"
+                        class="mx-1"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item @click="createReport()">
+                        <v-list-item-title class="red--text"
+                          >Report</v-list-item-title
+                        >
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </div>
+            </v-col>
           </v-row>
         </v-img>
       </v-card>
@@ -58,6 +83,9 @@
         <div class="pa-3" v-for="(post, i) in event.posts" :key="i">
           <Post :data="post" @getPosts="getPosts" />
         </div>
+        <div class="pa-3" v-if="event && event.posts && event.posts.length == 0">
+          <div class="text-center">No Posts</div>
+        </div>
       </div>
     </v-col>
     <v-col class="flex-grow-0 flex-shrink-0">
@@ -74,6 +102,18 @@
       :event_id="event.id"
       :callbackClose="closeCreatePost"
     />
+    <DialogEditEvent
+      v-if="isEditEvent"
+      :event="event"
+      :callbackClose="closeEditEvent"
+    />
+    <ReportDialog
+      v-if="isCreateReport"
+      model="event"
+      :model_id="event.id"
+      :data="event"
+      :callbackClose="closeCreateReport"
+    />
   </v-row>
 </template>
 
@@ -86,7 +126,7 @@ export default {
       import(
         /* webpackChunkName: "component-event-post" */ "@/components/event/Post/PostFrame"
       ),
-      Participant: () =>
+    Participant: () =>
       import(
         /* webpackChunkName: "component-event-participant" */ "@/components/event/Participant"
       ),
@@ -94,12 +134,18 @@ export default {
       import(
         /* webpackChunkName: "component-event-create-post" */ "@/components/event/NewPostDialog"
       ),
+      DialogEditEvent: () =>
+      import(
+        /* webpackChunkName: "component-event-edit" */ "@/components/event/EditEventDialog"
+      ),
   },
   data() {
     return {
       isCreatePost: false,
       isApiLoading: false,
       isCancelApiLoading: false,
+      isCreateReport: false,
+      isEditEvent: false,
       filters: [
         { title: "All", icon: "mdi-ballot", key: "all" },
         { title: "Friends", icon: "mdi-account-multiple", key: "friends" },
@@ -128,6 +174,18 @@ export default {
   methods: {
     createPost() {
       this.isCreatePost = true;
+    },
+    createReport() {
+      this.isCreateReport = true;
+    },
+    editEvent() {
+      this.isEditEvent = true;
+    },
+    closeCreateReport() {
+      this.isCreateReport = false;
+    },
+    closeEditEvent() {
+      this.isEditEvent = false;
     },
     checkStudent() {
       if (
