@@ -2,13 +2,7 @@
   <div>
     <v-row>
       <v-col
-        class="
-          flex-grow-1 flex-shrink-0
-          d-flex
-          flex-column
-          justify-center
-          align-center
-        "
+        class="flex-grow-1 flex-shrink-0 d-flex flex-column justify-center align-center"
       >
         <v-card width="100%">
           <v-img
@@ -47,261 +41,288 @@
     </v-row>
 
     <div class="pa-9">
-    <v-row>
-      <v-col>
-        <div>
-          <v-file-input
-            @change="onFileChange"
-            label="Cover Image"
-            filled
-            rounded
-            prepend-icon="mdi-camera"
-          ></v-file-input>
-        </div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <div>
-          <v-text-field
-            rounded
-            filled
-            label="Event Name"
-            v-model="name"
-            prepend-icon="mdi-rename"
-          ></v-text-field>
-        </div>
-      </v-col>
-      <v-col>
-        <div>
-          <v-text-field
-            rounded
-            filled
-            label="Venue"
-            v-model="venue"
-            prepend-icon="mdi-map-marker"
-          ></v-text-field>
-        </div>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col>
-        <div>
-          <v-menu
-            ref="menu1"
-            v-model="menu1"
-            :close-on-content-click="false"
-            :return-value.sync="startDate"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
+      <v-form ref="eventform" :v-model="true" lazy-validation>
+        <v-row>
+          <v-col>
+            <div>
+              <v-file-input
+                @change="onFileChange"
+                label="Cover Image"
+                filled
+                rounded
+                prepend-icon="mdi-camera"
+              ></v-file-input>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <div>
               <v-text-field
-                v-model="startDate"
-                label="Start Date"
-                prepend-icon="mdi-calendar"
-                readonly
                 rounded
                 filled
-                :min="minDate"
-                v-bind="attrs"
-                v-on="on"
+                label="Event Name"
+                v-model="name"
+                :rules="[() => !!name || 'Event name is required']"
+                prepend-icon="mdi-rename"
               ></v-text-field>
-            </template>
-            <v-date-picker v-model="startDate" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="menu1 = false">
-                Cancel
-              </v-btn>
-              <v-btn text color="primary" @click="$refs.menu1.save(startDate)">
-                OK
-              </v-btn>
-            </v-date-picker>
-          </v-menu>
-        </div>
-      </v-col>
-      <v-col>
-        <div>
-          <v-menu
-            ref="menu4"
-            v-model="menu4"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            :return-value.sync="startTime"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
+            </div>
+          </v-col>
+          <v-col>
+            <div>
               <v-text-field
-                v-model="startTime"
-                label="Start Time"
-                prepend-icon="mdi-clock-time-four-outline"
-                readonly
                 rounded
                 filled
-                v-bind="attrs"
-                v-on="on"
+                label="Venue"
+                v-model="venue"
+                :rules="[() => !!venue || 'Venue name is required']"
+                prepend-icon="mdi-map-marker"
               ></v-text-field>
-            </template>
-            <v-time-picker v-if="menu4" v-model="startTime" full-width>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="menu4 = false">
-                Cancel
-              </v-btn>
-              <v-btn text color="primary" @click="$refs.menu4.save(startTime)">
-                OK
-              </v-btn>
-            </v-time-picker>
-          </v-menu>
-        </div>
-      </v-col>
-    </v-row>
-    <div>
-      <v-row>
-        <v-col>
-          <div>
-            <v-menu
-              ref="menu2"
-              v-model="menu2"
-              :close-on-content-click="false"
-              :return-value.sync="endDate"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="endDate"
-                  label="End Date"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  rounded
-                  filled
-                  :min="minDate"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="endDate" no-title scrollable>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="menu2 = false">
-                  Cancel
-                </v-btn>
-                <v-btn text color="primary" @click="$refs.menu2.save(endDate)">
-                  OK
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
-          </div>
-        </v-col>
-        <v-col>
-          <div>
-            <v-menu
-              ref="menu3"
-              v-model="menu3"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              :return-value.sync="endTime"
-              transition="scale-transition"
-              offset-y
-              max-width="290px"
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="endTime"
-                  label="End Time"
-                  prepend-icon="mdi-clock-time-four-outline"
-                  readonly
-                  rounded
-                  filled
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker v-if="menu3" v-model="endTime" full-width>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="menu3 = false">
-                  Cancel
-                </v-btn>
-                <v-btn text color="primary" @click="$refs.menu3.save(endTime)">
-                  OK
-                </v-btn>
-              </v-time-picker>
-            </v-menu>
-          </div>
-        </v-col>
-      </v-row>
-    </div>
-    <v-row>
-      <v-col>
-        <template v-slot:prepend-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-text-field
-                v-model="searchTerm"
-                placeholder="Search"
-                @input="searchStudents"
-              ></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
-          <v-divider class="mt-2"></v-divider> </template></v-col
-    ></v-row>
+            </div>
+          </v-col>
+        </v-row>
 
-    <v-select
-      v-model="selectedStudents"
-      :items="students"
-      item-text="first_name"
-      item-value="id"
-      attach
-      label="Add colaborators"
-      prepend-icon="mdi-account-group"
-      multiple
-      rounded
-      filled
-    >
-      <template v-slot:prepend-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-text-field
-              v-model="searchTerm"
-              placeholder="Search"
-              @input="searchStudents"
-            ></v-text-field>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider class="mt-2"></v-divider>
-      </template>
-      <template v-slot:item="{ item }">
-        <template>
-          <v-list-item-avatar>
-            <v-avatar color="teal">
-            <img
-            v-if="item.image_url"
-            :src="item.image_url"
-            :alt="item.first_name"
-          />
-          <span v-else class="white--text text-h6"
-            >{{ item.first_name[0]
-            }}{{ item.last_name[0] }}</span
+        <v-row>
+          <v-col>
+            <div>
+              <v-menu
+                ref="menu1"
+                v-model="menu1"
+                :close-on-content-click="false"
+                :return-value.sync="startDate"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="startDate"
+                    label="Start Date"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    rounded
+                    filled
+                    :min="minDate"
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="startDate" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="menu1 = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu1.save(startDate)"
+                  >
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
+            </div>
+          </v-col>
+          <v-col>
+            <div>
+              <v-menu
+                ref="menu4"
+                v-model="menu4"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="startTime"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="startTime"
+                    label="Start Time"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    rounded
+                    filled
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker v-if="menu4" v-model="startTime" full-width>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="menu4 = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu4.save(startTime)"
+                  >
+                    OK
+                  </v-btn>
+                </v-time-picker>
+              </v-menu>
+            </div>
+          </v-col>
+        </v-row>
+        <div>
+          <v-row>
+            <v-col>
+              <div>
+                <v-menu
+                  ref="menu2"
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :return-value.sync="endDate"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="endDate"
+                      label="End Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      rounded
+                      filled
+                      :min="minDate"
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="endDate" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu2 = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.menu2.save(endDate)"
+                    >
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
+              </div>
+            </v-col>
+            <v-col>
+              <div>
+                <v-menu
+                  ref="menu3"
+                  v-model="menu3"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  :return-value.sync="endTime"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="endTime"
+                      label="End Time"
+                      prepend-icon="mdi-clock-time-four-outline"
+                      readonly
+                      rounded
+                      filled
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker v-if="menu3" v-model="endTime" full-width>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu3 = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.menu3.save(endTime)"
+                    >
+                      OK
+                    </v-btn>
+                  </v-time-picker>
+                </v-menu>
+              </div>
+            </v-col>
+          </v-row>
+        </div>
+        <v-row>
+          <v-col>
+            <template v-slot:prepend-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-text-field
+                    v-model="searchTerm"
+                    placeholder="Search"
+                    @input="searchStudents"
+                  ></v-text-field>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider class="mt-2"></v-divider> </template></v-col
+        ></v-row>
+
+        <v-select
+          v-model="selectedStudents"
+          :items="students"
+          item-text="first_name"
+          item-value="id"
+          attach
+          label="Add colaborators"
+          prepend-icon="mdi-account-group"
+          multiple
+          rounded
+          filled
+          :rules="[v => selectedStudents.length >= 2 || 'Please add at least two colaborators',]"
+        >
+          <template v-slot:prepend-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-text-field
+                  v-model="searchTerm"
+                  placeholder="Search"
+                  @input="searchStudents"
+                ></v-text-field>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider class="mt-2"></v-divider>
+          </template>
+          <template v-slot:item="{ item }">
+            <template>
+              <v-list-item-avatar>
+                <v-avatar color="teal">
+                  <img
+                    v-if="item.image_url"
+                    :src="item.image_url"
+                    :alt="item.first_name"
+                  />
+                  <span v-else class="white--text text-h6"
+                    >{{ item.first_name[0] }}{{ item.last_name[0] }}</span
+                  >
+                </v-avatar>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title
+                  >{{ item.first_name }} {{ item.last_name }}</v-list-item-title
+                >
+              </v-list-item-content>
+            </template>
+          </template>
+        </v-select>
+        <div class="text-right">
+          <v-btn
+            class="mt-3"
+            color="primary"
+            :loading="isApiLoading"
+            @click="submit()"
+            >Create Event</v-btn
           >
-          </v-avatar> 
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title >{{ item.first_name }} {{ item.last_name }}</v-list-item-title>
-          </v-list-item-content>
-        </template>
-      </template>
-    
-    </v-select>
-    <div class="text-right">
-      <v-btn class="mt-3" color="primary" :loading="isApiLoading" @click="submit()">Create Event</v-btn>
+        </div>
+      </v-form>
     </div>
-  </div>
   </div>
 </template>
 
@@ -359,37 +380,38 @@ export default {
       }
     },
     submit() {
-      this.isApiLoading = true,
-      axios
-        .post(
-          `${this.$api.servers.event}/add`,
-          {
-            image: this.image,
-            name: this.name,
-            venue: this.venue,
-            collaborators: this.selectedStudents,
-            start_at: moment(
-              this.startDate + " " + this.startTime
-            ).toISOString(),
-            end_at: moment(this.endDate + " " + this.endTime).toISOString(),
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + this.auth.token,
-            },
-          }
-        )
-        .then((response) => {
-          this.isApiLoading = false,
-          this.$router.push({
-            name: "EventRead",
-            params: { key: response.data.key },
-          });
-        })
-        .catch((error) => {
-          this.isApiLoading = false,
-          console.log(error);
-        });
+      if (this.$refs.eventform.validate()) {
+        (this.isApiLoading = true),
+          axios
+            .post(
+              `${this.$api.servers.event}/add`,
+              {
+                image: this.image,
+                name: this.name,
+                venue: this.venue,
+                collaborators: this.selectedStudents,
+                start_at: moment(
+                  this.startDate + " " + this.startTime
+                ).toISOString(),
+                end_at: moment(this.endDate + " " + this.endTime).toISOString(),
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + this.auth.token,
+                },
+              }
+            )
+            .then((response) => {
+              (this.isApiLoading = false),
+                this.$router.push({
+                  name: "EventRead",
+                  params: { key: response.data.key },
+                });
+            })
+            .catch((error) => {
+              (this.isApiLoading = false), console.log(error);
+            });
+      }
     },
     getStudents() {
       axios
@@ -412,7 +434,12 @@ export default {
       }
 
       this.students = this.studentsCopy.filter((name) => {
-        return name.last_name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1 || name.first_name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+        return (
+          name.last_name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) >
+            -1 ||
+          name.first_name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) >
+            -1
+        );
       });
     },
   },
