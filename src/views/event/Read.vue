@@ -191,7 +191,7 @@ export default {
       if (
         this.event.event_collaborators.find(
           (e) => e.student_id === this.auth.student.id
-        )
+        ) && this.event.status == 'published'
       ) {
         return true;
       } else {
