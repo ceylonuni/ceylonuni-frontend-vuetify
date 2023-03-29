@@ -11,7 +11,7 @@ const loggedIn = function (to, from, next) {
 
 const routes = [
   {
-    path: "/",
+    path: "/socializing",
     component: () =>
       import(
         /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/socializing/Home"
@@ -24,6 +24,94 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "view-socializing-home" */ "@/views/socializing/Home"
+          ),
+      },
+      {
+        path: "people",
+        name: "SocializingPeople",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-socializing-people" */ "@/views/socializing/People"
+          ),
+      },
+      {
+        path: "posts/:key",
+        name: "SocializingPostRead",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-socializing-post-read" */ "@/views/socializing/Read"
+          ),
+      },
+      {
+        path: "search",
+        name: "SearchResults",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-socializing-search" */ "@/views/socializing/Search"
+          ),
+      },
+      {
+        path: "account/:username",
+        name: "AuthMyAccount",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-auth-account" */ "@/views/auth/Account"
+          ),
+      },
+    ],
+  },
+  {
+    path: "/events",
+    component: () =>
+      import(
+        /* webpackChunkName: "layout-socializing-timeline" */ "@/layouts/event/Home"
+      ),
+    beforeEnter: multiguard([loggedIn]),
+    children: [
+      {
+        path: "all",
+        name: "EventHome",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-home" */ "@/views/event/Home"
+          ),
+      },
+      {
+        path: "your",
+        name: "YourEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-your" */ "@/views/event/Your"
+          ),
+      },
+      {
+        path: "interested",
+        name: "YourInterestedEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-your" */ "@/views/event/Interested"
+          ),
+      },
+      {
+        path: "collborated",
+        name: "YourCollboratedEvent",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-collborated" */ "@/views/event/Collborated"
+          ),
+      },
+      {
+        path: "new",
+        name: "NewEvent",
+        component: () =>
+          import(/* webpackChunkName: "view-event-New" */ "@/views/event/New"),
+      },
+      {
+        path: ":key",
+        name: "EventRead",
+        component: () =>
+          import(
+            /* webpackChunkName: "view-event-read" */ "@/views/event/Read"
           ),
       },
     ],
@@ -60,6 +148,14 @@ const routes = [
           ),
       },
     ],
+  },
+  {
+    path: "/study",
+    component: () =>
+      import(
+        /* webpackChunkName: "layout-study-home" */ "@/layouts/study/Home"
+      ),
+    name: "StudyHome",
   },
 ];
 

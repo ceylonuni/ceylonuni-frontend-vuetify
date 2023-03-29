@@ -22,20 +22,12 @@
         rounded
         :to="{ name: 'SocializingHome' }"
         class="text-capitalize"
-        color="teal"
       >
-        <v-icon small color="teal darken-1"> mdi-account-group </v-icon>
+        <v-icon small color="grey darken-1"> mdi-account-group </v-icon>
         socializing
       </v-btn>
-      <v-btn
-        elevation="0"
-        small
-        text
-        rounded
-        :to="{ name: 'EventHome' }"
-        class="text-capitalize"
-      >
-        <v-icon small color="grey darken-1"> mdi-calendar-star </v-icon>
+      <v-btn elevation="0" small text rounded class="text-capitalize" :to="{ name: 'EventHome' }" color="teal">
+        <v-icon small color="teal darken-1"> mdi-calendar-star </v-icon>
         events
       </v-btn>
       <v-btn elevation="0" small text rounded class="text-capitalize" :to="{ name: 'StudyHome' }">
@@ -52,7 +44,9 @@
         </template>
 
         <v-list>
-          <v-list-item :to="{ name: 'SocializingPeople', query:{key:'requests'} }">
+          <v-list-item
+            :to="{ name: 'SocializingPeople', query: { key: 'requests' } }"
+          >
             <v-list-item-title
               >You have {{ data.friend_requests }} friends
               requests.</v-list-item-title
@@ -73,6 +67,7 @@
             icon
             large
             color="grey"
+            @click="share()"
             class="mx-1"
             v-bind="attrs"
             v-on="on"
@@ -124,6 +119,16 @@
       <v-divider />
 
       <v-list dense>
+        <v-list-item link>
+          <v-list-item-icon v-if="mini">
+            <v-icon>mdi-lightning-bolt</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content v-if="!mini">
+            <v-btn small color="primary" :to="{ name: 'NewEvent' }" dark
+              ><v-icon left> mdi-lightning-bolt </v-icon> Create Event
+            </v-btn>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item
           v-for="item in items"
           :key="item.title"
@@ -150,15 +155,20 @@
     <v-footer app>
       <!-- -->
     </v-footer>
+    <!-- dialogs -->
+    <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
   </v-app>
 </template>
 
 <script>
-const axios = require("axios").default;
 import { mapState } from "vuex";
+const axios = require("axios").default;
 export default {
   components: {
-    //
+    DialogCreatePost: () =>
+      import(
+        /* webpackChunkName: "component-socializing-create-post" */ "@/components/socializing/NewPostDialog"
+      ),
   },
   computed: mapState({
     auth: (state) => state.auth.data,
@@ -173,21 +183,22 @@ export default {
     searchKey: "",
   }),
   created() {
-    console.log(this.auth)
     this.items = [
-      { title: "Home", icon: "mdi-home", route: { name: "SocializingHome" } },
       {
-        title: "My Account",
+        title: "All Events",
+        icon: "mdi-account-multiple",
+        route: { name: "EventHome" },
+      },
+      { title: "Your Events", icon: "mdi-home", route: { name: "YourEvent" } },
+      {
+        title: "Interested Events",
         icon: "mdi-account",
-        route: {
-          name: "AuthMyAccount",
-          params: { username: this.auth.student.username },
-        },
+        route: { name: "YourInterestedEvent" },
       },
       {
-        title: "Peoples",
-        icon: "mdi-account-multiple",
-        route: { name: "SocializingPeople" },
+        title: "Collborated Events",
+        icon: "mdi-account",
+        route: { name: "YourCollboratedEvent" },
       },
     ];
   },
@@ -210,6 +221,12 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    createPost() {
+      this.isCreatePost = true;
+    },
+    closeCreatePost() {
+      this.isCreatePost = false;
     },
     search() {
       this.$router.push({
