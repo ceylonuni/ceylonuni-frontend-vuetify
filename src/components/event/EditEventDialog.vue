@@ -278,7 +278,7 @@
             Close
           </v-btn>
           <v-btn
-            :loading="isLoading"
+            :loading="isApiLoading"
             color="green darken-1"
             text
             @click="submit"
@@ -329,7 +329,7 @@ export default {
       dialog: true,
       token: null,
       image: null,
-      isLoading: false,
+      isApiLoading: false,
     };
   },
 
@@ -365,11 +365,9 @@ export default {
               }
             )
             .then((response) => {
-              (this.isApiLoading = false),
-                this.$router.push({
-                  name: "EventRead",
-                  params: { key: response.data.key },
-                });
+              console.log(response)
+              this.isApiLoading = false
+                this.closeDialog();
             })
             .catch((error) => {
               (this.isApiLoading = false), console.log(error);
