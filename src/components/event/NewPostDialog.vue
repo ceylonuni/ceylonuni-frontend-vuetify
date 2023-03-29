@@ -41,8 +41,7 @@
           <v-btn color="green darken-1" text @click="closeDialog">
             Close
           </v-btn>
-
-          <v-btn color="green darken-1" text @click="submit"> Submit </v-btn>
+          <v-btn :loading="isLoading" color="green darken-1" text @click="submit"> Submit </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -70,6 +69,7 @@ export default {
       text: null,
       token: null,
       image:null,
+      isLoading: false
     };
   },
 
@@ -96,6 +96,7 @@ export default {
       }
     },
     submit() {
+      this.isLoading = true
       axios
         .post(
           `${this.$api.servers.event}/post/add`,
@@ -112,9 +113,11 @@ export default {
         )
         .then((response) => {
           console.log(response);
+          this.isLoading = false
           this.closeDialog();
         })
         .catch((error) => {
+          this.isLoading = false
           console.log(error);
         });
     },
