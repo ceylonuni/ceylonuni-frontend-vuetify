@@ -185,6 +185,7 @@ export default {
       this.isCreateReport = false;
     },
     closeEditEvent() {
+      this.getEvent();
       this.isEditEvent = false;
     },
     checkStudent() {
