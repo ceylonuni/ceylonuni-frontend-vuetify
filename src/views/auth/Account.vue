@@ -99,53 +99,77 @@
               </div>
             </div>
             <div v-if="auth.student.id != profile.students.id">
-                <v-menu
-                  bottom
-                  origin="center center"
-                  transition="scale-transition"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      icon
-                      large
-                      color="black"
-                      class="mx-1"
-                      v-bind="attrs"
-                      v-on="on"
+              <v-menu
+                bottom
+                origin="center center"
+                transition="scale-transition"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    large
+                    color="black"
+                    class="mx-1"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="createReport()">
+                    <v-list-item-title class="red--text"
+                      >Report</v-list-item-title
                     >
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item @click="createReport()">
-                      <v-list-item-title class="red--text"
-                        >Report</v-list-item-title
-                      >
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </div>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
           </div>
         </v-img>
       </v-card>
       <div class="d-flex justify-center py-3">
-      <v-btn v-if="auth.student.id == profile.students.id" class="mx-auto" width="600"  color="teal" dark x-large @click="createPost">
-        <v-icon>mdi-lightning-bolt</v-icon>
-        Create Post
-      </v-btn>
-    </div>
-    <v-divider class="mx-auto my-3" width="600"></v-divider>
+        <v-btn
+          v-if="auth.student.id == profile.students.id"
+          class="mx-auto"
+          width="600"
+          color="teal"
+          dark
+          x-large
+          @click="createPost"
+        >
+          <v-icon>mdi-lightning-bolt</v-icon>
+          Create Post
+        </v-btn>
+      </div>
+      <v-divider class="mx-auto my-3" width="600"></v-divider>
       <div>
         <div class="pa-3" v-for="(post, i) in profile.students.posts" :key="i">
           <Post :data="post" @getPosts="getProfile" />
         </div>
-        <div class="pa-3" v-if="profile.students && profile.students.posts && profile.students.posts.length == 0">
-          <div class="text-center">No Posts</div>
+        <div
+          class="pa-3"
+          v-if="
+            profile.students &&
+            profile.students.posts &&
+            profile.students.posts.length == 0
+          "
+        >
+          <div class="text-center">
+            <div class="d-flex flex-column align-center teal--text text-h5">
+              <v-icon x-large color="teal darken-1"> mdi-image-area </v-icon>
+              No Posts available
+            </div>
+            <div class="grey--text">
+              Study area is currently under construction and will be launching
+              soon.
+            </div>
+          </div>
         </div>
       </div>
     </v-col>
-      <!-- dialogs -->
-      <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
+    <!-- dialogs -->
+    <DialogCreatePost v-if="isCreatePost" :callbackClose="closeCreatePost" />
     <ReportDialog
       v-if="isCreateReport"
       model="student"
@@ -202,12 +226,12 @@ export default {
     this.getProfile();
   },
   methods: {
-     createPost() {
+    createPost() {
       this.isCreatePost = true;
     },
     closeCreatePost() {
       this.isCreatePost = false;
-      this.getProfile()
+      this.getProfile();
     },
     createReport() {
       this.isCreateReport = true;

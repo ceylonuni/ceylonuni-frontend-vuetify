@@ -157,6 +157,10 @@ const routes = [
       ),
     name: "StudyHome",
   },
+  {
+    path: "",
+    redirect: "/socializing",
+  },
 ];
 
 const router = new VueRouter({
