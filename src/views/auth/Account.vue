@@ -128,9 +128,8 @@
           </div>
         </v-img>
       </v-card>
-      <div class="d-flex justify-center py-3">
+      <div class="d-flex justify-center py-3 mt-3" v-if="auth.student.id == profile.students.id">
         <v-btn
-          v-if="auth.student.id == profile.students.id"
           class="mx-auto"
           width="600"
           color="teal"
@@ -142,7 +141,7 @@
           Create Post
         </v-btn>
       </div>
-      <v-divider class="mx-auto my-3" width="600"></v-divider>
+      <v-divider v-if="auth.student.id == profile.students.id" class="mx-auto my-3" width="600"></v-divider>
       <div>
         <div class="pa-3" v-for="(post, i) in profile.students.posts" :key="i">
           <Post :data="post" @getPosts="getProfile" />
@@ -161,8 +160,7 @@
               No Posts available
             </div>
             <div class="grey--text">
-              Study area is currently under construction and will be launching
-              soon.
+              You didn't post anything in ceylonuni yet!
             </div>
           </div>
         </div>

@@ -1,8 +1,11 @@
 <template>
   <v-row>
-    <v-col cols="8" class="flex-grow-1 flex-shrink-0">
+    <v-col class="flex-grow-1 flex-shrink-0">
       <v-card width="100%">
         <v-img
+        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.4) , rgba(0,0,0,.6)"
+        width="100%"
+        max-height="300px"
           :src="
             event.image_url
               ? event.image_url
@@ -83,8 +86,19 @@
         <div class="pa-3" v-for="(post, i) in event.posts" :key="i">
           <Post :data="post" @getPosts="getPosts" />
         </div>
-        <div class="pa-3" v-if="event && event.posts && event.posts.length == 0">
-          <div class="text-center">No Posts</div>
+        <div
+          class="pa-3"
+          v-if="event && event.posts && event.posts.length == 0"
+        >
+          <div class="text-center">
+            <div class="d-flex flex-column align-center teal--text text-h5">
+              <v-icon x-large color="teal darken-1"> mdi-image-area </v-icon>
+              No Posts available
+            </div>
+            <div class="grey--text">
+              You didn't post anything in ceylonuni yet!
+            </div>
+          </div>
         </div>
       </div>
     </v-col>
@@ -134,7 +148,7 @@ export default {
       import(
         /* webpackChunkName: "component-event-create-post" */ "@/components/event/NewPostDialog"
       ),
-      DialogEditEvent: () =>
+    DialogEditEvent: () =>
       import(
         /* webpackChunkName: "component-event-edit" */ "@/components/event/EditEventDialog"
       ),
@@ -192,7 +206,8 @@ export default {
       if (
         this.event.event_collaborators.find(
           (e) => e.student_id === this.auth.student.id
-        ) && this.event.status == 'published'
+        ) &&
+        this.event.status == "published"
       ) {
         return true;
       } else {

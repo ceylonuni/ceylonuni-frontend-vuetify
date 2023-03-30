@@ -1,8 +1,17 @@
 <template>
   <v-row dense>
     <v-col v-for="event in events" :key="event.id" cols="4">
-        <EventCard :data="event" :isCollborated="false" @getData="getEvents()" />
+      <EventCard :data="event" :isCollborated="false" @getData="getEvents()" />
     </v-col>
+    <div class="pa-3 mt-12 pt-12" v-if="events.length == 0" style="width: 100%">
+      <div class="text-center">
+        <div class="d-flex flex-column align-center teal--text text-h5">
+          <v-icon x-large color="teal darken-1"> mdi-calendar </v-icon>
+          No events available
+        </div>
+        <div class="grey--text">You didn't create any events yet!</div>
+      </div>
+    </div>
   </v-row>
 </template>
 
@@ -36,7 +45,7 @@ export default {
       //   },
       // ],
 
-      events:[],
+      events: [],
       isApiLoading: false,
     };
   },
@@ -47,18 +56,14 @@ export default {
     this.getEvents();
   },
   methods: {
-   
     getEvents() {
       this.isApiLoading = true;
       axios
-        .get(
-          `${this.$api.servers.event}/getYour`,
-          {
-            headers: {
-              Authorization: "Bearer " + this.auth.token,
-            },
-          }
-        )
+        .get(`${this.$api.servers.event}/getYour`, {
+          headers: {
+            Authorization: "Bearer " + this.auth.token,
+          },
+        })
         .then((response) => {
           this.events = response.data;
           this.isApiLoading = false;

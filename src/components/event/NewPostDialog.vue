@@ -1,7 +1,7 @@
 
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="600px" class="rounded-xl">
       <v-card>
         <v-card-title class="text-h5"> Create post </v-card-title>
         <v-card-text>
@@ -12,7 +12,6 @@
               label="Content"
               rows="4"
               row-height="30"
-              shaped
               v-model="text"
             ></v-textarea>
           </div>
@@ -21,15 +20,15 @@
               @change="onFileChange"
               label="File input"
               filled
-              prepend-icon="mdi-camera"
+              :prepend-icon="null"
+              prepend-inner-icon="mdi-camera"
             ></v-file-input>
           </div>
           <div class="text-center" v-if="previewImage">
             <v-img
               class="ml-auto mr-auto"
               contain
-              max-height="150"
-              max-width="250"
+              max-width="500"
               :src="previewImage"
             ></v-img>
           </div>
@@ -38,10 +37,10 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="green darken-1" text @click="closeDialog">
+          <v-btn color="teal darken-1" text @click="closeDialog">
             Close
           </v-btn>
-          <v-btn :loading="isLoading" color="green darken-1" text @click="submit"> Submit </v-btn>
+          <v-btn :loading="isLoading" color="teal darken-1" text @click="submit"> Submit </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

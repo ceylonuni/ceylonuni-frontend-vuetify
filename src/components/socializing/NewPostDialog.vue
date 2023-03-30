@@ -28,8 +28,7 @@
             <v-img
               class="ml-auto mr-auto"
               contain
-              max-height="150"
-              max-width="250"
+              max-width="500"
               :src="previewImage"
             ></v-img>
           </div>

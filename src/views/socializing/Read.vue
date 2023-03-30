@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row v-if="data && data.id">
-      <v-col cols="8" class="flex-grow-1 flex-shrink-0">
+      <v-col class="flex-grow-1 flex-shrink-0">
         <v-card class="mx-auto" max-width="600" flat outlined>
           <ImagePost :data="data.image_url" v-if="data.image_url" />
           <VideoPost :data="data.video_url" v-else-if="data.video_url" />
