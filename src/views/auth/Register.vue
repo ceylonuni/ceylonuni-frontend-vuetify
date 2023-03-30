@@ -142,10 +142,17 @@
         <v-stepper-step step="4"> Confirmation </v-stepper-step>
         <v-stepper-content step="4">
           <v-card elevation="0" class="mb-3" color="transparent">
-            <v-checkbox
-              v-model="checkbox"
-              label="I Agree"
-            ></v-checkbox>
+            <div style="font-size: 12px;">
+              Thank you for considering registering with us. Please note that by
+              proceeding with the registration process, you are agreeing to
+              share your personal data with Ceylonuni. We take your privacy and
+              the protection of your personal information seriously, and will
+              always handle your data in accordance with our privacy policy and
+              applicable data protection laws. If you have any concerns or
+              questions about how your data will be used, please do not
+              hesitate to contact us.
+            </div>
+            <v-checkbox v-model="checkbox" label="I Agree"></v-checkbox>
           </v-card>
           <v-btn color="primary" @click="register()"> Confirm </v-btn>
           <v-btn text> Cancel </v-btn>
@@ -252,7 +259,7 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response)
+            console.log(response);
             this.$store.commit("updateAuth", response.data);
             this.$router.push({ name: "SocializingHome" });
           })

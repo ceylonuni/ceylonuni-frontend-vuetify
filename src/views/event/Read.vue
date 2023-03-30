@@ -185,13 +185,14 @@ export default {
       this.isCreateReport = false;
     },
     closeEditEvent() {
+      this.getEvent();
       this.isEditEvent = false;
     },
     checkStudent() {
       if (
         this.event.event_collaborators.find(
           (e) => e.student_id === this.auth.student.id
-        )
+        ) && this.event.status == 'published'
       ) {
         return true;
       } else {
